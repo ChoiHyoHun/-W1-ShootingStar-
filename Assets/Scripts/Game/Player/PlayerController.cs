@@ -11,10 +11,13 @@ public class PlayerController : Singleton<PlayerController>
 
     [SerializeField] float HorizontalSpeed;
     [SerializeField] float maxFallingSpeed;
-    [SerializeField] int hpStep;
+    [SerializeField] float dashSpeed;
+    [SerializeField] float bounceForce;
+    [SerializeField] int colorStep;
     int colorBlock;
-
-    Coroutine colorChanging;
+    float holdTime;
+    public bool isDash;
+    public int ACCStep;
 
     void Awake()
     {
@@ -22,7 +25,7 @@ public class PlayerController : Singleton<PlayerController>
         sprite = GetComponent<SpriteRenderer>();
         trail = GetComponentInChildren<TrailRenderer>();
 
-        colorBlock = (int)(maxFallingSpeed / hpStep);
+        colorBlock = (int)(maxFallingSpeed / colorStep);
     }
 
     // Update is called once per frame
@@ -36,83 +39,81 @@ public class PlayerController : Singleton<PlayerController>
         float horizontalInput = Input.GetAxis("Horizontal");
         rigid.AddForce(Vector2.right * horizontalInput * HorizontalSpeed, ForceMode2D.Impulse);
 
-        if (Mathf.Abs(rigid.velocity.y) > maxFallingSpeed)
+        dash();
+
+        if (rigid.velocity.y < -maxFallingSpeed)
         {
-            rigid.velocity = new Vector2(rigid.velocity.x, maxFallingSpeed);
+            rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
         }
     }
 
     void changeColor()
     {
-        float hp = Mathf.Abs(rigid.velocity.y);
+        float acc = Mathf.Abs(rigid.velocity.y);
+        ACCStep = (int)(acc / colorBlock);
 
-        int nowColor = (int)(hp / colorBlock);
         Color targetColor;
 
-        switch (nowColor)
+        switch (ACCStep)
         {
             // 보라
             case 0:
                 ColorUtility.TryParseHtmlString("#800080", out targetColor);
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
 
+                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 1:
                 ColorUtility.TryParseHtmlString("#4b0082", out targetColor);
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
 
+                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
 
             case 2:
                 ColorUtility.TryParseHtmlString("#0000ff", out targetColor);
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
 
+                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
 
             case 3:
                 ColorUtility.TryParseHtmlString("#008000", out targetColor);
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
 
+                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
 
             case 4:
                 ColorUtility.TryParseHtmlString("#ffff00", out targetColor);
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
 
+                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 5:
                 ColorUtility.TryParseHtmlString("#ff8c00", out targetColor);
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
 
+                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 6:
                 ColorUtility.TryParseHtmlString("#ff0000", out targetColor);
+
                 StartCoroutine(LerpColorChnage(sprite.color, targetColor));
-
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
-                break;
-
-            default:
-                Debug.Log("Wrong");
                 break;
         }
     }
 
     IEnumerator LerpColorChnage(Color nowColor, Color targetColor)
     {
-        float duration = 0.5f;
+        float duration = 0.1f;
         float timeElapsed = 0;
 
         while (timeElapsed < duration)
@@ -127,7 +128,7 @@ public class PlayerController : Singleton<PlayerController>
 
     IEnumerator LerpTrailChnage(Color nowColor, Color targetColor)
     {
-        float duration = 0.5f;
+        float duration = 0.1f;
         float timeElapsed = 0;
 
         while (timeElapsed < duration)
@@ -137,16 +138,38 @@ public class PlayerController : Singleton<PlayerController>
             yield return null;
         }
 
-        sprite.color = targetColor;
+        trail.startColor = targetColor;
     }
 
     void dash()
     {
-        // slide가 있다면
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space))
         {
+            if (!isDash)
+            {
+                isDash = true;
 
+                // 잠깐 정지
+                rigid.velocity = Vector2.zero;
+            }
+
+            holdTime += Time.deltaTime;
+
+            float force = Mathf.Clamp(holdTime * dashSpeed, 0f, maxFallingSpeed);
+            rigid.AddForce(Vector2.down * force, ForceMode2D.Impulse);
         }
+        else
+        {
+            if (isDash)
+                isDash = false;
+
+            holdTime = 0f;
+        }
+    }
+
+    public void Bounce(int power)
+    {
+        rigid.AddForce(Vector2.up * power * bounceForce, ForceMode2D.Impulse);
     }
 
 }
