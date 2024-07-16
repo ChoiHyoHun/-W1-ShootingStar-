@@ -26,8 +26,8 @@ public class MapSpwanManager : MonoBehaviour
         drawnElement2.transform.position = startTargetPosition + offset; // 맵 조각2 생성 위치
         MapPosition = offset; // 랜덤하게 생성될 맵 조각 생성 위치
 
-        Debug.Log(MapPosition.y);      
-        Debug.Log(useMapPrefabs1.Count);  
+        // Debug.Log(MapPosition.y);      
+        // Debug.Log(useMapPrefabs1.Count);  
         
     }
 
@@ -38,7 +38,7 @@ public class MapSpwanManager : MonoBehaviour
         // Debug.Log($"Player Y Position: {playerPosition.y}");
         // Debug.Log($"Map Y Position: {MapPosition.y}");     
         if(playerPosition.y < MapPosition.y){ // 맵 조각 생성 조건
-            Debug.Log("IF IN");
+            // Debug.Log("IF IN");
             MapPosition += offset; // 맵 조각 생성 위치 더 밑으로 내리기
             GameObject drawnElement = DrawElement(); // 맵 조각 List 중에서 하나 가져오기
             drawnElement.transform.position = MapPosition; // 맵 조각 생성 위치로 보내기
@@ -74,7 +74,7 @@ public class MapSpwanManager : MonoBehaviour
         GameObject drawnElement = useMapPrefabs1[index]; // 해당 숫자에 Element 가져오기
         drawnElement.SetActive(true);
         useMapPrefabs1.RemoveAt(index); // 뽑힌 Element 제거하기
-        Debug.Log(index);
+        // Debug.Log(index);
         return drawnElement; // Element 반환
     }
 

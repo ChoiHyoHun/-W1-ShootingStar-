@@ -1116,13 +1116,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMapPrefabs:
   - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 9156552434281309540, guid: 175816bc67adbb74db9ce060413f8ce3, type: 3}
   - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 9156552434281309540, guid: 175816bc67adbb74db9ce060413f8ce3, type: 3}
   - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 9156552434281309540, guid: 175816bc67adbb74db9ce060413f8ce3, type: 3}
   - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
-  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
-  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
-  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
-  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 9156552434281309540, guid: 175816bc67adbb74db9ce060413f8ce3, type: 3}
   - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
 --- !u!1 &873876084
 GameObject:
@@ -2548,6 +2548,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb9307659224af4448d6a237e2e8c0c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sprite1: {fileID: 0}
+  sprite2: {fileID: 0}
   HorizontalSpeed: 1
   dashSpeed: 30
   bounceForce: 5
