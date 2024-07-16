@@ -9,7 +9,7 @@ public class ChargeBar : MonoBehaviour
     public Image chargeBarImageLeft;   // SliderLeft 색상을 변경할 Image 컴포넌트 참조
     public Slider chargeBarSliderRight; // SliderRight UI 컴포넌트 참조
     public Image chargeBarImageRight;  // SliderRight 색상을 변경할 Image 컴포넌트 참조
-    public float duration = 1f;    // 무지개 색상이 한 사이클을 도는 데 걸리는 시간
+    public float duration = 3.5f;    // 무지개 색상이 한 사이클을 도는 데 걸리는 시간
     public int maxGauge = 100;     // 최대 게이지 값
     public float currentGauge;    // 현재 게이지 값 (float으로 변경)
     public float skillUsageRate = 1f; // 스킬 사용 시 게이지 소모 속도 (per second)
@@ -17,6 +17,10 @@ public class ChargeBar : MonoBehaviour
     void Start()
     {
         currentGauge = maxGauge; // 현재 게이지를 최대값으로 초기화
+
+        // 슬라이더의 백그라운드 이미지를 투명하게 설정
+        SetBackgroundTransparent(chargeBarSliderLeft);
+        SetBackgroundTransparent(chargeBarSliderRight);
 
         if (chargeBarImageLeft != null && chargeBarImageRight != null)
         {
@@ -29,6 +33,18 @@ public class ChargeBar : MonoBehaviour
             chargeBarSliderRight.maxValue = maxGauge;
             chargeBarSliderLeft.value = currentGauge; // 초기 게이지 값 설정
             chargeBarSliderRight.value = currentGauge;
+        }
+    }
+
+    // 슬라이더의 백그라운드 이미지를 투명하게 설정하는 함수
+    void SetBackgroundTransparent(Slider slider)
+    {
+        Image backgroundImage = slider.transform.Find("Background").GetComponent<Image>();
+        if (backgroundImage != null)
+        {
+            Color transparentColor = backgroundImage.color;
+            transparentColor.a = 0f; // 알파 값을 0으로 설정하여 완전히 투명하게 만듦
+            backgroundImage.color = transparentColor;
         }
     }
 
