@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Timers;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,10 +12,11 @@ public class PlayerController : Singleton<PlayerController>
     TrailRenderer trail;
     [SerializeField] SpriteRenderer sprite1;
     [SerializeField] SpriteRenderer sprite2;
-
-
     Slider slider;
     ChargeBar chargeBar;
+
+    [SerializeField] TextMeshProUGUI velocityTextPfb;
+    TextMeshProUGUI velocityText;
 
     [SerializeField] float HorizontalSpeed;
     [SerializeField] float dashSpeed;
@@ -32,13 +34,13 @@ public class PlayerController : Singleton<PlayerController>
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        // sprite1 = GetComponentInChildren<SpriteRenderer>();
-        // sprite1 = GetComponentInChildren<SpriteRenderer>();
         trail = GetComponentInChildren<TrailRenderer>();
 
         colorRange = (int)(maxFallingSpeed / colorStep);
         slider = FindObjectOfType<Slider>();
         chargeBar = slider.GetComponent<ChargeBar>();
+
+        velocityText = Instantiate(velocityTextPfb, FindObjectOfType<Canvas>().transform);
     }
 
     // Update is called once per frame
@@ -84,8 +86,9 @@ public class PlayerController : Singleton<PlayerController>
             ACCStep = colorStep - 1;
         }
 
-        Color targetColor;
+        velocityText.SetText((ACCStep + 1).ToString());
 
+        Color targetColor;
         switch (ACCStep)
         {
             // 보라
@@ -210,6 +213,9 @@ public class PlayerController : Singleton<PlayerController>
                 {
                     dashCoroutine = StartCoroutine(dashEffect());
                 }
+
+
+                velocityText.SetText("<#f98cde>Fever!");
             }
 
             holdTime += Time.deltaTime;
