@@ -93,16 +93,13 @@ public class GameManager : Singleton<GameManager>
     // 게임이 실패했을 때 호출되는 메서드
     public void FailGame()
     {
-        Debug.Log("FailGame 메서드 호출됨");
         StartCoroutine(WaitForDeath());
     }
 
     // 일정 시간 대기 후 씬을 다시 로드하는 코루틴
     IEnumerator WaitForDeath()
     {
-        Debug.Log("WaitForDeath 코루틴 시작됨"); // 디버그 로그 추가
-        yield return new WaitForSeconds(1);
-        Debug.Log("씬을 다시 로드합니다"); // 디버그 로그 추가
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        yield return new WaitForSeconds(2);
+        SceneManager.LoadScene("GameScene");
     }
 }

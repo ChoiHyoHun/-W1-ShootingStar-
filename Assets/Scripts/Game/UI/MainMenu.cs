@@ -1,38 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-
-    public string SceneToLoad;
-    public Button StartButton;
-    public GameObject MainMenuCanvas;
-    public bool isGameStart = false;
+    public Button startButton;
 
     void Start()
     {
-        Time.timeScale = 0f;
-        StartButton.onClick.AddListener(GameStart);
-        if (isGameStart == false)
+        if (startButton != null)
         {
-            MainMenuCanvas.SetActive(true);
+            startButton.onClick.AddListener(StartGame);
         }
     }
 
-
-    void Update()
+    void StartGame()
     {
-
+        SceneManager.LoadScene("GameScene");
     }
-
-    public void GameStart()
-    {
-        MainMenuCanvas.SetActive(false);
-        isGameStart = true;
-        Time.timeScale = 1f;
-    }
-
 }

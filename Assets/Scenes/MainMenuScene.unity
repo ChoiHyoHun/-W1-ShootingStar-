@@ -859,10 +859,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1f17ebacddcc3e4c954c0701361dc3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SceneToLoad: JiminTestScene
-  StartButton: {fileID: 1386806055}
-  MainMenuCanvas: {fileID: 395655856}
-  isGameStart: 0
+  startButton: {fileID: 1386806055}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
