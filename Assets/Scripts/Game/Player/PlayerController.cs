@@ -43,13 +43,11 @@ public class PlayerController : Singleton<PlayerController>
     void Update()
     {
         if (!isDash)
+        {
             changeColor();
 
-        // 회전
-        if (!isDash)
-        {
+            // 회전
             rotationSpeed = new Vector3(0, 0, (ACCStep + 1) * 180);
-            // Time.deltaTime을 곱하여 프레임 속도에 관계없이 일정 속도로 회전
             transform.Rotate(rotationSpeed * Time.deltaTime);
         }
         else
@@ -58,13 +56,15 @@ public class PlayerController : Singleton<PlayerController>
                 // 무조건 뾰족한거 아래로 향하게
                 transform.rotation = Quaternion.Euler(0, 0, 180);
         }
-
     }
 
     void FixedUpdate()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        rigid.AddForce(Vector2.right * horizontalInput * HorizontalSpeed, ForceMode2D.Impulse);
+        if (!isDash)
+        {
+            float horizontalInput = Input.GetAxis("Horizontal");
+            rigid.velocity = new Vector2(horizontalInput * HorizontalSpeed, rigid.velocity.y);
+        }
 
         dash();
 
