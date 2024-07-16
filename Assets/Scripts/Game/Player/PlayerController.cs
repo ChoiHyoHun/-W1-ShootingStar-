@@ -9,7 +9,8 @@ public class PlayerController : Singleton<PlayerController>
 {
     Rigidbody2D rigid;
     TrailRenderer trail;
-    SpriteRenderer sprite;
+    [SerializeField] SpriteRenderer sprite1;
+    [SerializeField] SpriteRenderer sprite2;
 
 
     Slider slider;
@@ -31,7 +32,8 @@ public class PlayerController : Singleton<PlayerController>
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        sprite = GetComponent<SpriteRenderer>();
+        // sprite1 = GetComponentInChildren<SpriteRenderer>();
+        // sprite1 = GetComponentInChildren<SpriteRenderer>();
         trail = GetComponentInChildren<TrailRenderer>();
 
         colorRange = (int)(maxFallingSpeed / colorStep);
@@ -99,14 +101,16 @@ public class PlayerController : Singleton<PlayerController>
                 // {
 
                 // }
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 1:
                 ColorUtility.TryParseHtmlString("#008000", out targetColor);
 
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
@@ -114,7 +118,8 @@ public class PlayerController : Singleton<PlayerController>
             case 2:
                 ColorUtility.TryParseHtmlString("#ffff00", out targetColor);
 
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
@@ -122,7 +127,8 @@ public class PlayerController : Singleton<PlayerController>
             case 3:
                 ColorUtility.TryParseHtmlString("#ff0000", out targetColor);
 
-                StartCoroutine(LerpColorChnage(sprite.color, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
@@ -157,12 +163,14 @@ public class PlayerController : Singleton<PlayerController>
 
         while (timeElapsed < duration)
         {
-            sprite.color = Color.Lerp(nowColor, targetColor, timeElapsed / duration);
+            sprite1.color = Color.Lerp(nowColor, targetColor, timeElapsed / duration);
+            sprite2.color = Color.Lerp(nowColor, targetColor, timeElapsed / duration);
             timeElapsed += Time.deltaTime;
             yield return null;
         }
 
-        sprite.color = targetColor;
+        sprite1.color = targetColor;
+        sprite2.color = targetColor;
     }
 
     IEnumerator LerpTrailChnage(Color nowColor, Color targetColor)
@@ -232,7 +240,8 @@ public class PlayerController : Singleton<PlayerController>
             timer += Time.deltaTime / duration;
             float hue = Mathf.Repeat(timer, 1f);  // hue 값이 0에서 1 사이를 반복
             Color newColor = Color.HSVToRGB(hue, 0.3f, 1f);  // HSV 값을 RGB로 변환
-            sprite.color = newColor;
+            sprite1.color = newColor;
+            sprite2.color = newColor;
             trail.startColor = newColor;
 
             yield return null;  // 다음 프레임까지 대기
