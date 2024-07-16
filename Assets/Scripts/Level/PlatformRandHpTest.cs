@@ -8,8 +8,6 @@ public class PlatformRandHpTest : MonoBehaviour
     [SerializeField]
     private int hp = 0;
     private int hpLimit = 4;
-
-    public PhysicsMaterial2D[] physicsMaterials;
     private BoxCollider2D boxCollider;
 
     SpriteRenderer pRenderer;
@@ -34,15 +32,16 @@ public class PlatformRandHpTest : MonoBehaviour
     //바닥 생성되는 순간 호출 > 이후 Start()호출
     private void OnEnable()
     {
-        // RandomSpawn();
+        RandomSpawn();
         hp = Random.Range(0, hpLimit);
+        //OnEnable에서 정해진 체력에 따라 색상 변경 및 물리 머티리얼 할당
+        HpToColor();
     }
 
 
     private void Start()
     {
-        //OnEnable에서 정해진 체력에 따라 색상 변경 및 물리 머티리얼 할당
-        HpToColor();
+
     }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
@@ -85,19 +84,15 @@ public class PlatformRandHpTest : MonoBehaviour
         {
             case 0: //파
                 pRenderer.color = Color.blue;
-                //boxCollider.sharedMaterial = physicsMaterials[0];
                 break;
             case 1: //초
                 pRenderer.color = ColorCodeToColor(greenHex, green);
-                //boxCollider.sharedMaterial = physicsMaterials[1];
                 break;
             case 2: //노
                 pRenderer.color = Color.yellow;
-                //boxCollider.sharedMaterial = physicsMaterials[2];
                 break;
             case 3: //빨
                 pRenderer.color = Color.red;
-                //boxCollider.sharedMaterial = physicsMaterials[3];
                 break;
         }
     }
