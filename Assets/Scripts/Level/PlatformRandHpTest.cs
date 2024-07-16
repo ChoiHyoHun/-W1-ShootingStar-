@@ -3,15 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using JetBrains.Annotations;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlatformRandHpTest : MonoBehaviour
 {
     [SerializeField]
-    private int hp = 0;
+    private int hp;
     private int hpLimit = 4;
     private BoxCollider2D boxCollider;
 
     SpriteRenderer pRenderer;
+
+    [SerializeField]
+    TextMeshProUGUI hpTextPfb;
+    TextMeshProUGUI hpText;
+    Canvas fixedCanvas;
 
     //색들
     string greenHex = "#008000";
@@ -30,15 +37,28 @@ public class PlatformRandHpTest : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        fixedCanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
+
+    }
+
     //바닥 생성되는 순간 호출 > 이후 Start()호출
     private void OnEnable()
     {
         RandomSpawn();
-        hp = Random.Range(0, hpLimit);
         //OnEnable에서 정해진 체력에 따라 색상 변경 및 물리 머티리얼 할당
         HpToColor();
     }
 
+    void OnDisable()
+    {
+        if (hpText != null)
+        {
+            Destroy(hpText.gameObject);
+        }
+
+    }
 
     private void Start()
     {
@@ -54,6 +74,7 @@ public class PlatformRandHpTest : MonoBehaviour
                 if (!PlayerController.Instance.isDash)
                     PlayerController.Instance.Bounce();
                 gameObject.SetActive(false);
+                Destroy(hpText.gameObject);
             }
             else
             {
@@ -71,9 +92,13 @@ public class PlatformRandHpTest : MonoBehaviour
         if (Random.Range(0, 2) == 0)
         {
             gameObject.SetActive(true);
+            hp = Random.Range(0, hpLimit);
+            hpText = Instantiate(hpTextPfb, transform.position, Quaternion.identity, fixedCanvas.GetComponent<Canvas>().transform);
+            hpText.SetText(hp.ToString());
         }
         else
         {
+            //Destroy(hpText.gameObject);
             gameObject.SetActive(false);
         }
     }

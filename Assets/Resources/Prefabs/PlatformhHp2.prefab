@@ -144,3 +144,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 2
+  hpTextPfb: {fileID: 2066857563627724266, guid: d2bcfbd3feba35140a0cf473f7fbdf0b, type: 3}

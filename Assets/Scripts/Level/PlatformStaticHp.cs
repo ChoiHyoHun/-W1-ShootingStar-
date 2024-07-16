@@ -1,11 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class PlatformStaticHp : MonoBehaviour
 {
     [SerializeField]
     private int hp;
+
+    [SerializeField]
+    TextMeshProUGUI hpTextPfb;
+    TextMeshProUGUI hpText;
+    Canvas fixedCanvas;
+    void Awake()
+    {
+        fixedCanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
+        hpText = Instantiate(hpTextPfb, transform.position, Quaternion.identity, fixedCanvas.GetComponent<Canvas>().transform);
+    }
+
+    void Start()
+    {
+        hpText.SetText(hp.ToString());
+    }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
@@ -16,6 +33,7 @@ public class PlatformStaticHp : MonoBehaviour
                 if (!PlayerController.Instance.isDash)
                     PlayerController.Instance.Bounce();
                 gameObject.SetActive(false);
+                Destroy(hpText);
             }
             else
             {
