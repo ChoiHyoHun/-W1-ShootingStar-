@@ -41,9 +41,6 @@ public class ChargeBar : MonoBehaviour
     // 스킬을 사용하는 함수
     public void UseSkill()
     {
-        // 스킬 사용 로직 추가
-        Debug.Log("스킬 사용 중!");
-
         // 게이지를 감소시킴
         currentGauge -= skillUsageRate * Time.deltaTime;
         if (currentGauge < 0)

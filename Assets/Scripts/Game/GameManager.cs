@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -85,5 +86,14 @@ public class GameManager : Singleton<GameManager>
     private void LoadBestScore()
     {
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
+    }
+
+    public void FailGame()
+    {
+        StartCoroutine(waitForDeath());
+    }
+    IEnumerator waitForDeath()
+    {
+        yield return new WaitForSeconds(1);
     }
 }
