@@ -9,6 +9,7 @@ public class PlatformStaticHp : MonoBehaviour
     [SerializeField]
     private int hp;
 
+    /*
     [SerializeField]
     TextMeshProUGUI hpTextPfb;
     TextMeshProUGUI hpText;
@@ -18,10 +19,11 @@ public class PlatformStaticHp : MonoBehaviour
         fixedCanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
         hpText = Instantiate(hpTextPfb, transform.position, Quaternion.identity, fixedCanvas.GetComponent<Canvas>().transform);
     }
+    */
 
     void Start()
     {
-        hpText.SetText(hp.ToString());
+        //hpText.SetText(hp.ToString());
     }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
@@ -33,7 +35,7 @@ public class PlatformStaticHp : MonoBehaviour
                 if (!PlayerController.Instance.isDash)
                     PlayerController.Instance.Bounce();
                 gameObject.SetActive(false);
-                Destroy(hpText);
+                //Destroy(hpText);
             }
             else
             {
@@ -44,6 +46,16 @@ public class PlatformStaticHp : MonoBehaviour
 
         }
     }
+
+    /*
+    void OnDisable()
+    {
+        if (hpText != null)
+        {
+            Destroy(hpText.gameObject);
+        }
+    }
+    */
 
     private bool CanBreak()
     {

@@ -15,10 +15,14 @@ public class PlatformRandHpTest : MonoBehaviour
 
     SpriteRenderer pRenderer;
 
+    /*
     [SerializeField]
     TextMeshProUGUI hpTextPfb;
     TextMeshProUGUI hpText;
     Canvas fixedCanvas;
+    */
+
+    TextMeshProUGUI hpText;
 
     //색들
     string greenHex = "#008000";
@@ -39,8 +43,10 @@ public class PlatformRandHpTest : MonoBehaviour
 
     private void Awake()
     {
+        hpText = GetComponentInChildren<TextMeshProUGUI>();
+        /*
         fixedCanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
-
+        */
     }
 
     //바닥 생성되는 순간 호출 > 이후 Start()호출
@@ -51,18 +57,24 @@ public class PlatformRandHpTest : MonoBehaviour
         HpToColor();
     }
 
+    /*
     void OnDisable()
     {
         if (hpText != null)
         {
             Destroy(hpText.gameObject);
         }
-
     }
+    */
 
     private void Start()
     {
 
+    }
+
+    private void SetHpText()
+    {
+        hpText.text = hp.ToString();
     }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
@@ -75,7 +87,7 @@ public class PlatformRandHpTest : MonoBehaviour
                     PlayerController.Instance.Bounce();
                 GameManager.Instance.AddScore(CalculateScore());
                 gameObject.SetActive(false);
-                Destroy(hpText.gameObject);
+                //Destroy(hpText.gameObject);
             }
             else
             {
@@ -94,8 +106,11 @@ public class PlatformRandHpTest : MonoBehaviour
         {
             gameObject.SetActive(true);
             hp = Random.Range(0, hpLimit);
+            SetHpText();
+            /*
             hpText = Instantiate(hpTextPfb, transform.position, Quaternion.identity, fixedCanvas.GetComponent<Canvas>().transform);
             hpText.SetText(hp.ToString());
+            */
         }
         else
         {
