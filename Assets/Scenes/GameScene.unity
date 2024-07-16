@@ -152,15 +152,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialMapPrefabs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
 --- !u!4 &15637242
 Transform:
   m_ObjectHideFlags: 0
@@ -251,6 +251,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 27279422}
   m_CullTransparentMesh: 1
+--- !u!1 &35054305 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5723841017479345918, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+  m_PrefabInstance: {fileID: 380839723}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &42015381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1459,6 +1464,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 0}
   bestScoreText: {fileID: 0}
+  player: {fileID: 35054305}
 --- !u!4 &755342319
 Transform:
   m_ObjectHideFlags: 0
