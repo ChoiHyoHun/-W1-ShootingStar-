@@ -74,7 +74,7 @@ public class PlatformRandHpTest : MonoBehaviour
 
     private void SetHpText()
     {
-        hpText.text = hp.ToString();
+        hpText.text = (hp + 1).ToString();
     }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
