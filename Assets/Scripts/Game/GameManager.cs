@@ -17,33 +17,9 @@ public class GameManager : Singleton<GameManager>
         UpdateBestScoreUI();       // UI에 최고 기록 표시 업데이트
     }
 
-    // 발판을 부술 때 호출되는 메서드
-    public void BreakPlatform(int platformIndex)
-    {
-        int points = 0;
-        switch (platformIndex)
-        {
-            case 0:
-                points = 10;
-                break;
-            case 1:
-                points = 20;
-                break;
-            case 2:
-                points = 30;
-                break;
-            case 3:
-                points = 40;
-                break;
-            default:
-                break;
-        }
-
-        AddScore(points); // 점수 추가
-    }
 
     // 점수를 추가하고 UI 업데이트
-    private void AddScore(int points)
+    public void AddScore(int points)
     {
         score += points;
         UpdateScoreUI();

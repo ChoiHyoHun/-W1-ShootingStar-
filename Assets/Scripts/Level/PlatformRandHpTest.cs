@@ -73,6 +73,7 @@ public class PlatformRandHpTest : MonoBehaviour
             {
                 if (!PlayerController.Instance.isDash)
                     PlayerController.Instance.Bounce();
+                GameManager.Instance.AddScore(CalculateScore());
                 gameObject.SetActive(false);
                 Destroy(hpText.gameObject);
             }
@@ -125,6 +126,13 @@ public class PlatformRandHpTest : MonoBehaviour
                 pRenderer.color = Color.red;
                 break;
         }
+    }
+
+    private int CalculateScore()
+    {
+        int basicPoint = 100;
+        return basicPoint * (1 + hp);
+
     }
 
     private bool CanBreak()
