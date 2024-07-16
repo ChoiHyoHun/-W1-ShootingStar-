@@ -58,8 +58,10 @@ public class PlatformRandHpTest : MonoBehaviour
             else
             {
                 // 임시로 죽으면 게임 멈춤
-                GameManager.Instance.FailGame();
                 Debug.Log("YOU DIED");
+                GameManager.Instance.FailGame();
+                Debug.Log("Yes");
+
             }
 
         }

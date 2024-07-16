@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Singleton<GameManager>
 {
     public Text scoreText;         // UI에 표시할 점수를 보여줄 Text 컴포넌트
     public Text bestScoreText;     // UI에 표시할 최고 기록을 보여줄 Text 컴포넌트
+    public GameObject MainMenuCanvas;
 
     private int score;             // 현재 점수
     private int bestScore;         // 최고 기록
@@ -88,12 +90,19 @@ public class GameManager : Singleton<GameManager>
         bestScore = PlayerPrefs.GetInt("BestScore", 0);
     }
 
+    // 게임이 실패했을 때 호출되는 메서드
     public void FailGame()
     {
-        StartCoroutine(waitForDeath());
+        Debug.Log("FailGame 메서드 호출됨");
+        StartCoroutine(WaitForDeath());
     }
-    IEnumerator waitForDeath()
+
+    // 일정 시간 대기 후 씬을 다시 로드하는 코루틴
+    IEnumerator WaitForDeath()
     {
+        Debug.Log("WaitForDeath 코루틴 시작됨"); // 디버그 로그 추가
         yield return new WaitForSeconds(1);
+        Debug.Log("씬을 다시 로드합니다"); // 디버그 로그 추가
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
