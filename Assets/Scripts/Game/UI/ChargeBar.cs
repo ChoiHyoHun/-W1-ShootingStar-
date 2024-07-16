@@ -5,26 +5,30 @@ using UnityEngine.UI;
 
 public class ChargeBar : MonoBehaviour
 {
-    public Slider chargeBarSlider; // Slider UI 컴포넌트 참조
-    public Image chargeBarImage;  // 색상을 변경할 Image 컴포넌트 참조
+    public Slider chargeBarSliderLeft; // SliderLeft UI 컴포넌트 참조
+    public Image chargeBarImageLeft;   // SliderLeft 색상을 변경할 Image 컴포넌트 참조
+    public Slider chargeBarSliderRight; // SliderRight UI 컴포넌트 참조
+    public Image chargeBarImageRight;  // SliderRight 색상을 변경할 Image 컴포넌트 참조
     public float duration = 1f;    // 무지개 색상이 한 사이클을 도는 데 걸리는 시간
     public int maxGauge = 100;     // 최대 게이지 값
-    private float currentGauge;    // 현재 게이지 값 (float으로 변경)
+    public float currentGauge;    // 현재 게이지 값 (float으로 변경)
     public float skillUsageRate = 1f; // 스킬 사용 시 게이지 소모 속도 (per second)
 
     void Start()
     {
         currentGauge = maxGauge; // 현재 게이지를 최대값으로 초기화
 
-        if (chargeBarImage != null)
+        if (chargeBarImageLeft != null && chargeBarImageRight != null)
         {
             StartCoroutine(RainbowEffect());
         }
 
-        if (chargeBarSlider != null)
+        if (chargeBarSliderLeft != null && chargeBarSliderRight != null)
         {
-            chargeBarSlider.maxValue = maxGauge; // 슬라이더의 최대 값을 설정
-            chargeBarSlider.value = currentGauge; // 초기 게이지 값 설정
+            chargeBarSliderLeft.maxValue = maxGauge; // 슬라이더의 최대 값을 설정
+            chargeBarSliderRight.maxValue = maxGauge;
+            chargeBarSliderLeft.value = currentGauge; // 초기 게이지 값 설정
+            chargeBarSliderRight.value = currentGauge;
         }
     }
 
@@ -34,7 +38,8 @@ public class ChargeBar : MonoBehaviour
         if (currentGauge < maxGauge)
         {
             currentGauge++;
-            chargeBarSlider.value = currentGauge;
+            chargeBarSliderLeft.value = currentGauge;
+            chargeBarSliderRight.value = currentGauge;
         }
     }
 
@@ -47,7 +52,8 @@ public class ChargeBar : MonoBehaviour
         {
             currentGauge = 0;
         }
-        chargeBarSlider.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderRight.value = currentGauge;
     }
 
     // 스킬 게이지를 증가시키는 함수
@@ -58,9 +64,9 @@ public class ChargeBar : MonoBehaviour
         {
             currentGauge = maxGauge;
         }
-        chargeBarSlider.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderRight.value = currentGauge;
     }
-
 
     IEnumerator RainbowEffect()
     {
@@ -69,7 +75,9 @@ public class ChargeBar : MonoBehaviour
         {
             elapsedTime += Time.deltaTime;
             float hue = Mathf.Repeat(elapsedTime / duration, 1f); // 0에서 1 사이의 Hue 값 반복
-            chargeBarImage.color = Color.HSVToRGB(hue, 1f, 1f); // Saturation과 Value는 1로 고정
+            Color color = Color.HSVToRGB(hue, 1f, 1f); // Saturation과 Value는 1로 고정
+            chargeBarImageLeft.color = color;
+            chargeBarImageRight.color = color;
             yield return null; // 한 프레임 대기
         }
     }
