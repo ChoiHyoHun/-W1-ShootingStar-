@@ -7,21 +7,21 @@ public class MapSpwanManager : MonoBehaviour
 {
     public GameObject[] initialMapPrefabs; // 초기 설정한 배열값
     private List<GameObject> useMapPrefabs; // 사용할 배열
-    private Vector3 offset = new Vector3(0,-500,0);
-    Vector3 startTargetPosition = new Vector3(0,0,0);
-    Vector3 MapPosition;
-    public GameObject player;
+    private Vector3 offset = new Vector3(0,-500,0); // 얼마만큼 맵 조각이 떨어져 있나. 맵 크기와 상관있음
+    Vector3 startTargetPosition = new Vector3(0,0,0); // 첫 맵 조각이 나올 위치
+    Vector3 MapPosition; // 랜덤하게 생성될 맵 조각 생성 위치
+    // 플레이어
 
     // Start is called before the first frame update
     void Start()
     {
         ResetGameObjects();
         GameObject drawnElement1 = DrawElement(); // List에서 맵 조각 하나 뽑음
-        GameObject drawnElement2 = DrawElement();
+        GameObject drawnElement2 = DrawElement(); // List 맵 조각 하나 뽑음2
 
-        drawnElement1.transform.position = startTargetPosition;
-        drawnElement2.transform.position = startTargetPosition + offset;
-        MapPosition = offset;
+        drawnElement1.transform.position = startTargetPosition; // 맵 조각1 생성 위치
+        drawnElement2.transform.position = startTargetPosition + offset; // 맵 조각2 생성 위치
+        MapPosition = offset; // 랜덤하게 생성될 맵 조각 생성 위치
 
         Debug.Log(MapPosition.y);        
         
@@ -30,15 +30,14 @@ public class MapSpwanManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {   // 맵 위치와 플레이어 위치 비교 후 반 넘어가면 맵 조각 생성
-        Vector3 playerPosition = player.transform.position;  
+        Vector3 playerPosition = PlayerController.Instance.transform.position;  
         Debug.Log($"Player Y Position: {playerPosition.y}");
         Debug.Log($"Map Y Position: {MapPosition.y}");     
-        if(playerPosition.y < MapPosition.y){
+        if(playerPosition.y < MapPosition.y){ // 맵 조각 생성 조건
             Debug.Log("IF IN");
-            MapPosition += offset;
-            GameObject drawnElement = DrawElement();
-            drawnElement.transform.position = MapPosition;
-
+            MapPosition += offset; // 맵 조각 생성 위치 더 밑으로 내리기
+            GameObject drawnElement = DrawElement(); // 맵 조각 List 중에서 하나 가져오기
+            drawnElement.transform.position = MapPosition; // 맵 조각 생성 위치로 보내기
         }
 
     }
@@ -49,19 +48,19 @@ public class MapSpwanManager : MonoBehaviour
     }
 
     GameObject DrawElement(){
-        if(useMapPrefabs.Count == 0){
+        if(useMapPrefabs.Count == 0){ // List에 몇 개 남았는지 보기
 
             // 현재 리스트 비어있으면 초기 리스트로 초기화
             ResetGameObjects();
         }
 
         //랜덤하게 뽑고 리스트 제거
-        int index = Random.Range(0, useMapPrefabs.Count);
-        GameObject drawnElement = useMapPrefabs[index];
-        useMapPrefabs.RemoveAt(index);
+        int index = Random.Range(0, useMapPrefabs.Count); // 숫자 뽑기
+        GameObject drawnElement = useMapPrefabs[index]; // 해당 숫자에 Element 가져오기
+        useMapPrefabs.RemoveAt(index); // 뽑힌 Element 제거하기
         Debug.Log(index);
 
-        return drawnElement;
+        return drawnElement; // Element 반환
     }
 
     
