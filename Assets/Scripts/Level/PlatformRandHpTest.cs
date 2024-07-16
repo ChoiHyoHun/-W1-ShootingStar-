@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using JetBrains.Annotations;
+
 public class PlatformRandHpTest : MonoBehaviour
 {
     [SerializeField]
@@ -50,11 +51,14 @@ public class PlatformRandHpTest : MonoBehaviour
         {
             if (CanBreak())
             {
-                PlayerController.Instance.Bounce();
+                if (!PlayerController.Instance.isDash)
+                    PlayerController.Instance.Bounce();
                 gameObject.SetActive(false);
             }
             else
             {
+                // 임시로 죽으면 게임 멈춤
+                Time.timeScale = 0;
                 Debug.Log("YOU DIED");
             }
 
@@ -99,7 +103,7 @@ public class PlatformRandHpTest : MonoBehaviour
 
     private bool CanBreak()
     {
-        if (PlayerController.Instance.ACCStep >= hp)
+        if (PlayerController.Instance.ACCStep >= hp || PlayerController.Instance.isDash)
         {
             return true;
         }
