@@ -7,26 +7,39 @@ public class MapSpwanManager : MonoBehaviour
 {
     public GameObject[] initialMapPrefabs; // 초기 설정한 배열값
     private List<GameObject> useMapPrefabs; // 사용할 배열
-    private Vector3 offset = new Vector3(0,-5000,0);
+    private Vector3 offset = new Vector3(0,-500,0);
     Vector3 startTargetPosition = new Vector3(0,0,0);
+    Vector3 MapPosition;
+    public GameObject player;
 
     // Start is called before the first frame update
     void Start()
     {
         ResetGameObjects();
-        GameObject drawnElement1 = DrawElement();
+        GameObject drawnElement1 = DrawElement(); // List에서 맵 조각 하나 뽑음
         GameObject drawnElement2 = DrawElement();
 
         drawnElement1.transform.position = startTargetPosition;
         drawnElement2.transform.position = startTargetPosition + offset;
+        MapPosition = offset;
 
+        Debug.Log(MapPosition.y);        
         
-
     }
 
     // Update is called once per frame
     void Update()
-    {
+    {   // 맵 위치와 플레이어 위치 비교 후 반 넘어가면 맵 조각 생성
+        Vector3 playerPosition = player.transform.position;  
+        Debug.Log($"Player Y Position: {playerPosition.y}");
+        Debug.Log($"Map Y Position: {MapPosition.y}");     
+        if(playerPosition.y < MapPosition.y){
+            Debug.Log("IF IN");
+            MapPosition += offset;
+            GameObject drawnElement = DrawElement();
+            drawnElement.transform.position = MapPosition;
+
+        }
 
     }
 
