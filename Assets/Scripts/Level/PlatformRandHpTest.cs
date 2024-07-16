@@ -18,11 +18,13 @@ public class PlatformRandHpTest : MonoBehaviour
     string greenHex = "#008000";
     Color green;
 
-    private Color ColorCodeToColor(string colorCode, Color color){
-        if(ColorUtility.TryParseHtmlString(colorCode, out color))
+    private Color ColorCodeToColor(string colorCode, Color color)
+    {
+        if (ColorUtility.TryParseHtmlString(colorCode, out color))
         {
             return color;
-        } else
+        }
+        else
         {
             Debug.Log("틀린 컬러 코드");
             return color;
@@ -33,7 +35,7 @@ public class PlatformRandHpTest : MonoBehaviour
     private void OnEnable()
     {
         // RandomSpawn();
-        hp = Random.Range(0, hpLimit );
+        hp = Random.Range(0, hpLimit);
     }
 
 
@@ -45,58 +47,69 @@ public class PlatformRandHpTest : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        if(collisionInfo.collider.tag == "Player")
+        if (collisionInfo.collider.tag == "Player")
         {
-            if(CanBreak()){
-                                PlayerController.Instance.Bounce();
+            if (CanBreak())
+            {
+                PlayerController.Instance.Bounce();
                 gameObject.SetActive(false);
-            } else {
+            }
+            else
+            {
                 Debug.Log("YOU DIED");
             }
 
-        } 
+        }
     }
 
     private void RandomSpawn()
     {
-        if(Random.Range(0, 2)==0){
+        if (Random.Range(0, 2) == 0)
+        {
             gameObject.SetActive(true);
-        } else {
+        }
+        else
+        {
             gameObject.SetActive(false);
         }
     }
 
     private void HpToColor()
     {
-    pRenderer = GetComponent<SpriteRenderer>();
-    boxCollider = GetComponent<BoxCollider2D>();
+        pRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
 
 
         //체력에 따라 색상을 변경
-        switch(hp){
+        switch (hp)
+        {
             case 0: //파
-            pRenderer.color = Color.blue;
-            //boxCollider.sharedMaterial = physicsMaterials[0];
-            break;
+                pRenderer.color = Color.blue;
+                //boxCollider.sharedMaterial = physicsMaterials[0];
+                break;
             case 1: //초
-            pRenderer.color = ColorCodeToColor(greenHex, green);
-            //boxCollider.sharedMaterial = physicsMaterials[1];
-            break;
+                pRenderer.color = ColorCodeToColor(greenHex, green);
+                //boxCollider.sharedMaterial = physicsMaterials[1];
+                break;
             case 2: //노
-            pRenderer.color = Color.yellow;
-            //boxCollider.sharedMaterial = physicsMaterials[2];
-            break;
+                pRenderer.color = Color.yellow;
+                //boxCollider.sharedMaterial = physicsMaterials[2];
+                break;
             case 3: //빨
-            pRenderer.color = Color.red;
-            //boxCollider.sharedMaterial = physicsMaterials[3];
-            break;
+                pRenderer.color = Color.red;
+                //boxCollider.sharedMaterial = physicsMaterials[3];
+                break;
         }
     }
 
-    private bool CanBreak(){
-        if(PlayerController.Instance.ACCStep >= hp){
+    private bool CanBreak()
+    {
+        if (PlayerController.Instance.ACCStep >= hp)
+        {
             return true;
-        } else {
+        }
+        else
+        {
             return false;
         }
 

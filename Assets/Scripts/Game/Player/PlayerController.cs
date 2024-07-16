@@ -20,6 +20,8 @@ public class PlayerController : Singleton<PlayerController>
     float holdTime;
     public bool isDash;
     public int ACCStep;
+    Coroutine dashCoroutine;
+    Coroutine colorCoroutine;
 
     void Awake()
     {
@@ -81,6 +83,15 @@ public class PlayerController : Singleton<PlayerController>
             case 0:
                 ColorUtility.TryParseHtmlString("#0000ff", out targetColor);
 
+                // if (colorCoroutine != null)
+                // {
+                //     StopCoroutine(colorCoroutine);
+                //     colorCoroutine = StartCoroutine(LerpColorChnage(sprite.color, targetColor));
+                // }
+                // else
+                // {
+
+                // }
                 StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
@@ -162,8 +173,6 @@ public class PlayerController : Singleton<PlayerController>
         trail.startColor = targetColor;
     }
 
-    Coroutine dashCoroutine;
-
     void dash()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -219,6 +228,12 @@ public class PlayerController : Singleton<PlayerController>
 
             yield return null;  // 다음 프레임까지 대기
         }
+    }
+
+    public void Bounce()
+    {
+        rigid.velocity = Vector2.zero;
+        rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
     }
 
 
