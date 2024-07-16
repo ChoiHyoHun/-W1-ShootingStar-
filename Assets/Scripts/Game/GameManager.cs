@@ -7,7 +7,6 @@ public class GameManager : Singleton<GameManager>
 {
     public Text scoreText;         // UI에 표시할 점수를 보여줄 Text 컴포넌트
     public Text bestScoreText;     // UI에 표시할 최고 기록을 보여줄 Text 컴포넌트
-    public GameObject MainMenuCanvas;
 
     private int score;             // 현재 점수
     private int bestScore;         // 최고 기록
@@ -93,6 +92,7 @@ public class GameManager : Singleton<GameManager>
     // 게임이 실패했을 때 호출되는 메서드
     public void FailGame()
     {
+
         StartCoroutine(WaitForDeath());
     }
 
@@ -102,4 +102,5 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene("GameScene");
     }
+
 }
