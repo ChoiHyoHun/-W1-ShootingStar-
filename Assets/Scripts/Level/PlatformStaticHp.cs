@@ -34,6 +34,7 @@ public class PlatformStaticHp : MonoBehaviour
             {
                 if (!PlayerController.Instance.isDash)
                     PlayerController.Instance.Bounce();
+                GameManager.Instance.AddScore(CalculateScore());
                 gameObject.SetActive(false);
                 //Destroy(hpText);
             }
@@ -45,6 +46,13 @@ public class PlatformStaticHp : MonoBehaviour
             }
 
         }
+    }
+
+    private int CalculateScore()
+    {
+        int basicPoint = 100;
+        return basicPoint * (1 + hp);
+
     }
 
     /*
