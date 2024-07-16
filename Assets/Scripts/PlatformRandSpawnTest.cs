@@ -6,11 +6,12 @@ public class PlatformRandSpawnTest : MonoBehaviour
 {
     public GameObject[] platforms;
 
+    /*
     private void OnEnable()
     {
         for(int i =0; i<platforms.Length; i++)
         {
-            if(Random.Range(0,4)==0)
+            if(Random.Range(0,3)==0)
             {
                 platforms[i].SetActive(true);
             }
@@ -20,5 +21,6 @@ public class PlatformRandSpawnTest : MonoBehaviour
             }
         }
     }
-
+    */
+    
 }
