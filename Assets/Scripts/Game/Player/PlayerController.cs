@@ -12,7 +12,6 @@ public class PlayerController : Singleton<PlayerController>
     TrailRenderer trail;
     [SerializeField] SpriteRenderer sprite1;
     [SerializeField] SpriteRenderer sprite2;
-    Slider slider;
     ChargeBar chargeBar;
 
     [SerializeField] TextMeshProUGUI velocityTextPfb;
@@ -24,7 +23,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] float maxFallingSpeed;
     [SerializeField] int colorStep;
     Vector3 rotationSpeed; // 초당 90도 회전 (Z축 기준)
-    float colorRange;
+    [SerializeField] float colorRange;
     float holdTime;
     public bool isDash;
     public int ACCStep;
@@ -36,19 +35,21 @@ public class PlayerController : Singleton<PlayerController>
         rigid = GetComponent<Rigidbody2D>();
         trail = GetComponentInChildren<TrailRenderer>();
 
-        colorRange = (int)(maxFallingSpeed / colorStep);
-        slider = FindObjectOfType<Slider>();
-        chargeBar = slider.GetComponent<ChargeBar>();
+        colorRange = maxFallingSpeed / colorStep;
+        // slider = FindObjectOfType<Slider>();
+        chargeBar = FindObjectOfType<ChargeBar>();
 
-        velocityText = Instantiate(velocityTextPfb, FindObjectOfType<Canvas>().transform);
+        velocityText = Instantiate(velocityTextPfb, GameObject.Find("Canvas").GetComponent<Canvas>().transform);
     }
 
     // Update is called once per frame
     void Update()
     {
+
         if (!isDash)
         {
-            changeColor();
+            if (!isBouncing)
+                changeColor();
 
             // 회전
             rotationSpeed = new Vector3(0, 0, (ACCStep + 1) * 180);
@@ -60,6 +61,7 @@ public class PlayerController : Singleton<PlayerController>
                 // 무조건 뾰족한거 아래로 향하게
                 transform.rotation = Quaternion.Euler(0, 0, 180);
         }
+
     }
 
     void FixedUpdate()
@@ -76,6 +78,11 @@ public class PlayerController : Singleton<PlayerController>
         {
             rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
         }
+    }
+
+    void LateUpdate()
+    {
+        velocityText.transform.position = transform.position;
     }
 
     void changeColor()
@@ -134,28 +141,6 @@ public class PlayerController : Singleton<PlayerController>
                 // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
-
-
-                // case 4:
-                //     ColorUtility.TryParseHtmlString("#ffff00", out targetColor);
-
-                //     StartCoroutine(LerpColorChnage(sprite.color, targetColor));
-                //     StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
-                //     break;
-
-                // case 5:
-                //     ColorUtility.TryParseHtmlString("#ff8c00", out targetColor);
-
-                //     StartCoroutine(LerpColorChnage(sprite.color, targetColor));
-                //     StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
-                //     break;
-
-                // case 6:
-                //     ColorUtility.TryParseHtmlString("#ff0000", out targetColor);
-
-                //     StartCoroutine(LerpColorChnage(sprite.color, targetColor));
-                //     StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
-                //     break;
         }
     }
 
@@ -193,7 +178,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void dash()
     {
-        if (Input.GetKey(KeyCode.Space) && slider.value > 0)
+        if (Input.GetKey(KeyCode.Space) && chargeBar.currentGauge > 0)
         {
             chargeBar.UseSkill();
 
@@ -254,10 +239,62 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    Coroutine bounceCoroutine = null;
+    float saveAcc;
+    bool isBouncing = false;
+
+    public void SaveAcc()
+    {
+        saveAcc = ACCStep;
+        // Debug.Log("[Before]: " + saveAcc);
+    }
+
     public void Bounce()
     {
+        SaveAcc();
+
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+
+        if (bounceCoroutine != null)
+        {
+            StopCoroutine(bounceCoroutine);
+            bounceCoroutine = StartCoroutine(checkBounceReverse());
+        }
+        else
+        {
+            bounceCoroutine = StartCoroutine(checkBounceReverse());
+        }
+    }
+
+    IEnumerator checkBounceReverse()
+    {
+        while (true)
+        {
+            if (!isBouncing)
+            {
+                isBouncing = true;
+                velocityText.SetText("");
+            }
+
+
+            if (rigid.velocity.y < 0)
+            {
+                if (isBouncing)
+                {
+                    isBouncing = false;
+                    // velocityText.SetText("");
+                }
+                float target_vel = ((saveAcc - 1) < 0 ? 0 : (saveAcc - 1)) * colorRange;
+
+                // Debug.Log("[After]: " + target_vel);
+                // Debug.Log("=================================");
+                rigid.velocity = new Vector2(rigid.velocity.x, -target_vel);
+                yield break;
+            }
+
+            yield return null;
+        }
     }
 
 

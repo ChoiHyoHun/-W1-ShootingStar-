@@ -84,7 +84,9 @@ public class PlatformRandHpTest : MonoBehaviour
             if (CanBreak())
             {
                 if (!PlayerController.Instance.isDash)
+                {
                     PlayerController.Instance.Bounce();
+                }
                 GameManager.Instance.AddScore(CalculateScore());
                 gameObject.SetActive(false);
                 //Destroy(hpText.gameObject);
@@ -93,7 +95,7 @@ public class PlatformRandHpTest : MonoBehaviour
             {
                 // 임시로 죽으면 게임 멈춤
                 Debug.Log("YOU DIED");
-                GameManager.Instance.FailGame();
+                // GameManager.Instance.FailGame();
 
             }
 
@@ -154,6 +156,7 @@ public class PlatformRandHpTest : MonoBehaviour
     {
         if (PlayerController.Instance.ACCStep >= hp || PlayerController.Instance.isDash)
         {
+            // PlayerController.Instance.SaveBounce();
             return true;
         }
         else
