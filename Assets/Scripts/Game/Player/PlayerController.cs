@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Timers;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : Singleton<PlayerController>
 {
     Rigidbody2D rigid;
     TrailRenderer trail;
     SpriteRenderer sprite;
+
+
+    Slider slider;
+    ChargeBar chargeBar;
 
     [SerializeField] float HorizontalSpeed;
     [SerializeField] float dashSpeed;
@@ -30,6 +35,8 @@ public class PlayerController : Singleton<PlayerController>
         trail = GetComponentInChildren<TrailRenderer>();
 
         colorRange = (int)(maxFallingSpeed / colorStep);
+        slider = FindObjectOfType<Slider>();
+        chargeBar = slider.GetComponent<ChargeBar>();
     }
 
     // Update is called once per frame
@@ -175,8 +182,10 @@ public class PlayerController : Singleton<PlayerController>
 
     void dash()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && slider.value > 0)
         {
+            chargeBar.UseSkill();
+
             if (!isDash)
             {
                 isDash = true;
