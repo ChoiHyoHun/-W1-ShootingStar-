@@ -15,7 +15,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] float bounceForce;
     [SerializeField] float maxFallingSpeed;
     [SerializeField] int colorStep;
-    Vector3 rotationSpeed = new Vector3(0, 0, 90); // 초당 90도 회전 (Z축 기준)
+    Vector3 rotationSpeed; // 초당 90도 회전 (Z축 기준)
     float colorRange;
     float holdTime;
     public bool isDash;
@@ -33,25 +33,21 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
-        changeColor();
+        if (!isDash)
+            changeColor();
 
         // 회전
         if (!isDash)
         {
+            rotationSpeed = new Vector3(0, 0, (ACCStep + 1) * 180);
             // Time.deltaTime을 곱하여 프레임 속도에 관계없이 일정 속도로 회전
             transform.Rotate(rotationSpeed * Time.deltaTime);
-
-            if (rigid.constraints != RigidbodyConstraints2D.None)
-                rigid.constraints = RigidbodyConstraints2D.None;
         }
         else
         {
             if (transform.rotation != Quaternion.Euler(0, 0, 180))
                 // 무조건 뾰족한거 아래로 향하게
                 transform.rotation = Quaternion.Euler(0, 0, 180);
-
-            if (rigid.constraints != RigidbodyConstraints2D.FreezeRotation)
-                rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
     }
@@ -71,7 +67,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void changeColor()
     {
-        int ACCStep = (int)(Mathf.Abs(rigid.velocity.y) / colorRange);
+        ACCStep = (int)(Mathf.Abs(rigid.velocity.y) / colorRange);
         if (ACCStep == colorStep)
         {
             ACCStep = colorStep - 1;
@@ -106,7 +102,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
             case 3:
-                ColorUtility.TryParseHtmlString("ff0000", out targetColor);
+                ColorUtility.TryParseHtmlString("#ff0000", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
@@ -166,6 +162,8 @@ public class PlayerController : Singleton<PlayerController>
         trail.startColor = targetColor;
     }
 
+    Coroutine dashCoroutine;
+
     void dash()
     {
         if (Input.GetKey(KeyCode.Space))
@@ -177,25 +175,49 @@ public class PlayerController : Singleton<PlayerController>
                 // 잠깐 정지
                 rigid.velocity = Vector2.zero;
 
-                // 무조건 뾰족한거 아래로 향하게
-                // transform.rotation = Quaternion.Euler(0, 0, 180);
-                // rigid.constraints = RigidbodyConstraints2D.FreezeRotation;
+                if (dashCoroutine != null)
+                {
+                    StopCoroutine(dashCoroutine);
+                    dashCoroutine = StartCoroutine(dashEffect());
+                }
+                else
+                {
+                    dashCoroutine = StartCoroutine(dashEffect());
+                }
             }
 
             holdTime += Time.deltaTime;
 
             float force = Mathf.Clamp(holdTime * dashSpeed, 0f, maxFallingSpeed);
             rigid.AddForce(Vector2.down * force, ForceMode2D.Impulse);
+
         }
         else
         {
             if (isDash)
             {
                 isDash = false;
-                // rigid.constraints = RigidbodyConstraints2D.None;
+                StopCoroutine(dashCoroutine);
             }
 
             holdTime = 0f;
+        }
+    }
+
+    IEnumerator dashEffect()
+    {
+        float timer = 0f;
+        float duration = 0.5f;
+
+        while (true)
+        {
+            timer += Time.deltaTime / duration;
+            float hue = Mathf.Repeat(timer, 1f);  // hue 값이 0에서 1 사이를 반복
+            Color newColor = Color.HSVToRGB(hue, 0.3f, 1f);  // HSV 값을 RGB로 변환
+            sprite.color = newColor;
+            trail.startColor = newColor;
+
+            yield return null;  // 다음 프레임까지 대기
         }
     }
 
