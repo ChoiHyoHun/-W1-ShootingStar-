@@ -8,6 +8,7 @@ public class FollowCamera : MonoBehaviour
 
     void LateUpdate()
     {
-        transform.position = new Vector3(PlayerController.Instance.transform.position.x, PlayerController.Instance.transform.position.y, transform.position.z) + (Vector3)cameraOffset;
+        if (PlayerController.Instance != null)
+            transform.position = new Vector3(0, PlayerController.Instance.transform.position.y, transform.position.z) + (Vector3)cameraOffset;
     }
 }
