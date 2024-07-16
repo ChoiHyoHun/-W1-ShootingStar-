@@ -28,15 +28,6 @@ public class ChargeBar : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        // 스페이스 바를 누르고 있는 동안 스킬을 사용
-        if (Input.GetKey(KeyCode.Space) && currentGauge > 0)
-        {
-            UseSkill();
-        }
-    }
-
     // 발판을 부술 때 호출되는 함수
     public void IncreaseGauge()
     {
@@ -48,11 +39,8 @@ public class ChargeBar : MonoBehaviour
     }
 
     // 스킬을 사용하는 함수
-    private void UseSkill()
+    public void UseSkill()
     {
-        // 스킬 사용 로직 추가
-        Debug.Log("스킬 사용 중!");
-
         // 게이지를 감소시킴
         currentGauge -= skillUsageRate * Time.deltaTime;
         if (currentGauge < 0)
