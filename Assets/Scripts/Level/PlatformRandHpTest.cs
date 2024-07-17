@@ -74,7 +74,7 @@ public class PlatformRandHpTest : MonoBehaviour
 
     private void SetHpText()
     {
-        hpText.text = hp.ToString();
+        hpText.text = (hp + 1).ToString();
     }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
@@ -95,7 +95,7 @@ public class PlatformRandHpTest : MonoBehaviour
             {
                 // 임시로 죽으면 게임 멈춤
                 Debug.Log("YOU DIED");
-                // GameManager.Instance.FailGame();
+                GameManager.Instance.FailGame();
 
             }
 

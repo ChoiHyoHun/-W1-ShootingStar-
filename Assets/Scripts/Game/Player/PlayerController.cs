@@ -29,6 +29,9 @@ public class PlayerController : Singleton<PlayerController>
     public int ACCStep;
     Coroutine dashCoroutine;
     Coroutine colorCoroutine;
+    Coroutine bounceCoroutine = null;
+    float saveAcc;
+    bool isBouncing = false;
 
     void Awake()
     {
@@ -203,11 +206,11 @@ public class PlayerController : Singleton<PlayerController>
                 velocityText.SetText("<#f98cde>Fever!");
             }
 
-            holdTime += Time.deltaTime;
+            // holdTime += Time.deltaTime;
 
-            float force = Mathf.Clamp(holdTime * dashSpeed, 0f, maxFallingSpeed);
-            rigid.AddForce(Vector2.down * force, ForceMode2D.Impulse);
-
+            // float force = Mathf.Clamp(holdTime * dashSpeed, 0f, maxFallingSpeed);
+            // rigid.AddForce(Vector2.down * force, ForceMode2D.Impulse);
+            rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
         }
         else
         {
@@ -239,10 +242,6 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
-    Coroutine bounceCoroutine = null;
-    float saveAcc;
-    bool isBouncing = false;
-
     public void SaveAcc()
     {
         saveAcc = ACCStep;
@@ -252,6 +251,8 @@ public class PlayerController : Singleton<PlayerController>
     public void Bounce()
     {
         SaveAcc();
+
+        chargeBar.ChargeSkill(10f);
 
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
