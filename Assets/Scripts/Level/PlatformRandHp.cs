@@ -95,7 +95,7 @@ public class PlatformRandHp : MonoBehaviour
             {
                 if (!PlayerController.Instance.isDash)
                 {
-                    PlayerController.Instance.Bounce();
+                    PlayerController.Instance.Bounce(transform.position.y);
                 }
                 GameManager.Instance.AddScore(CalculateScore());
 

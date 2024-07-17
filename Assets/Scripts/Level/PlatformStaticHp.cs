@@ -40,7 +40,7 @@ public class PlatformStaticHp : MonoBehaviour
             if (CanBreak())
             {
                 if (!PlayerController.Instance.isDash)
-                    PlayerController.Instance.Bounce();
+                    PlayerController.Instance.Bounce(transform.position.y);
                 GameManager.Instance.AddScore(CalculateScore());
 
                 scoreText = Instantiate(scoreTextPfb, transform.position, Quaternion.identity);

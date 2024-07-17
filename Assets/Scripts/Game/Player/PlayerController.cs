@@ -50,8 +50,7 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
-
-        dash2();
+        dash();
 
         if (!isDash)
         {
@@ -96,8 +95,6 @@ public class PlayerController : Singleton<PlayerController>
         }
 
         rigid.velocity = new Vector2(horizontalInput * HorizontalSpeed, rigid.velocity.y);
-
-        // dash();
 
         if (rigid.velocity.y < -maxFallingSpeed)
         {
@@ -191,46 +188,6 @@ public class PlayerController : Singleton<PlayerController>
 
     void dash()
     {
-        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.DownArrow)) && chargeBar.currentGauge > 0)
-        {
-            chargeBar.UseSkill();
-
-            if (!isDash)
-            {
-                isDash = true;
-
-                // 잠깐 정지
-                rigid.velocity = Vector2.zero;
-
-                if (dashCoroutine != null)
-                {
-                    StopCoroutine(dashCoroutine);
-                    dashCoroutine = StartCoroutine(dashEffect());
-                }
-                else
-                {
-                    dashCoroutine = StartCoroutine(dashEffect());
-                }
-
-
-                velocityText.SetText("<#f98cde>Fever!");
-            }
-
-            rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
-        }
-        else
-        {
-            if (isDash)
-            {
-                isDash = false;
-                StopCoroutine(dashCoroutine);
-            }
-
-        }
-    }
-
-    void dash2()
-    {
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge)
         {
 
@@ -300,30 +257,43 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    float blockY;
     public void SaveAcc()
     {
         saveAcc = ACCStep;
+
         // Debug.Log("[Before]: " + saveAcc);
     }
 
-    public void Bounce()
+    public void Bounce(float yPos)
     {
         SaveAcc();
 
         chargeBar.ChargeSkill(10f);
 
-        rigid.velocity = Vector2.zero;
-        rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
-
-        if (bounceCoroutine != null)
+        if (rigid.position.y < yPos)
         {
-            StopCoroutine(bounceCoroutine);
-            bounceCoroutine = StartCoroutine(checkBounceReverse());
+            rigid.velocity = Vector2.zero;
+            float target_vel = ((saveAcc - 1) < 0 ? 0 : (saveAcc - 1)) * colorRange;
+
+            rigid.velocity = new Vector2(rigid.velocity.x, -target_vel);
         }
         else
         {
-            bounceCoroutine = StartCoroutine(checkBounceReverse());
+            rigid.velocity = Vector2.zero;
+            rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
+
+            if (bounceCoroutine != null)
+            {
+                StopCoroutine(bounceCoroutine);
+                bounceCoroutine = StartCoroutine(checkBounceReverse());
+            }
+            else
+            {
+                bounceCoroutine = StartCoroutine(checkBounceReverse());
+            }
         }
+
     }
 
     IEnumerator checkBounceReverse()
