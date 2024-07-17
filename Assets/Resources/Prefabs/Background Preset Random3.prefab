@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4867953583958392913}
   - component: {fileID: 4849081641497672103}
   m_Layer: 0
-  m_Name: Background Preset Random1 1
+  m_Name: Background Preset Random3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

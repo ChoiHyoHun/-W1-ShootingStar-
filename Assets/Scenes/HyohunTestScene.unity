@@ -2251,13 +2251,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialMapPrefabs:
+  - {fileID: 7911272304737722623, guid: 81442f78ec4cbd849b978cc65bf61eca, type: 3}
   - {fileID: 7911272304737722623, guid: c2bbbd8d96c03de4db6c4f128ade6028, type: 3}
-  - {fileID: 7911272304737722623, guid: 0e1668c561f1bc34ea5805b1b7e6e199, type: 3}
-  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
-  - {fileID: 6072289962589263989, guid: b0d3047d65596c840b8c6388355f6e60, type: 3}
-  - {fileID: 6072289962589263989, guid: cd3d8e9e886eb9f47a700ca648669ad0, type: 3}
-  - {fileID: 7911272304737722623, guid: ef133c836c082ba4dac9ccc3bc951be6, type: 3}
-  - {fileID: 7911272304737722623, guid: 37ed127ef244021408e6041b03cb4ba0, type: 3}
 --- !u!4 &1290845865
 Transform:
   m_ObjectHideFlags: 0
