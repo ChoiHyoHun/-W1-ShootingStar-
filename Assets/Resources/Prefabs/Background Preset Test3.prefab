@@ -1644,6 +1644,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlatformhHp0 (13)
       objectReference: {fileID: 0}
+    - target: {fileID: 659437176582365352, guid: c5c5c4458d0f3424784469bb2af9d466, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4722489454165993425, guid: c5c5c4458d0f3424784469bb2af9d466, type: 3}
       propertyPath: m_LocalPosition.x
       value: 6
@@ -1807,6 +1811,10 @@ PrefabInstance:
     - target: {fileID: 7584169070263510574, guid: ce5d2d5994570bc49971ed5e63435f71, type: 3}
       propertyPath: m_Name
       value: PlatformhHp1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7584169070263510574, guid: ce5d2d5994570bc49971ed5e63435f71, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

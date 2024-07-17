@@ -11,6 +11,14 @@ public class PlatformActivator : MonoBehaviour
         for (int i = 3; i < transform.childCount; i++)
         {
             transform.GetChild(i).gameObject.SetActive(true);
+            if (transform.GetChild(i).IsChildOf(transform.GetChild(i)))
+            {
+                Transform bundle = transform.GetChild(i);
+                for (int j = 0; j < bundle.childCount; j++)
+                {
+                    bundle.GetChild(j).gameObject.SetActive(true);
+                }
+            }
         }
 
     }
