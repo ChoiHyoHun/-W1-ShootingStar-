@@ -85,6 +85,6 @@ public class GameManager : Singleton<GameManager>
     IEnumerator WaitForDeath()
     {
         yield return new WaitForSeconds(2);
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 다시 로드
     }
 }

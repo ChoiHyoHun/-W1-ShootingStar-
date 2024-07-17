@@ -64,6 +64,6 @@ public class PauseMenu : MonoBehaviour
         pauseMenuCanvas.SetActive(false);
         isPause = false;
         Time.timeScale = 1f;
-        SceneManager.LoadScene("GameScene");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
