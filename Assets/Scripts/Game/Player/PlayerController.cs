@@ -206,10 +206,6 @@ public class PlayerController : Singleton<PlayerController>
                 velocityText.SetText("<#f98cde>Fever!");
             }
 
-            // holdTime += Time.deltaTime;
-
-            // float force = Mathf.Clamp(holdTime * dashSpeed, 0f, maxFallingSpeed);
-            // rigid.AddForce(Vector2.down * force, ForceMode2D.Impulse);
             rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
         }
         else
@@ -284,18 +280,20 @@ public class PlayerController : Singleton<PlayerController>
                 if (isBouncing)
                 {
                     isBouncing = false;
-                    // velocityText.SetText("");
                 }
                 float target_vel = ((saveAcc - 1) < 0 ? 0 : (saveAcc - 1)) * colorRange;
 
-                // Debug.Log("[After]: " + target_vel);
-                // Debug.Log("=================================");
                 rigid.velocity = new Vector2(rigid.velocity.x, -target_vel);
                 yield break;
             }
 
             yield return null;
         }
+    }
+
+    void OnDestroy()
+    {
+        Destroy(velocityText.gameObject);
     }
 
 
