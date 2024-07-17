@@ -71,13 +71,10 @@ public class GameManager : Singleton<GameManager>
     {
         if (PlayerController.Instance != null)
         {
-            // 플레이어 캐릭터의 위치를 저장
-            Vector3 playerPosition = PlayerController.Instance.transform.position;
             // 플레이어 캐릭터 파괴
             Destroy(PlayerController.Instance.gameObject);
-
-
         }
+
         StartCoroutine(WaitForDeath());
     }
 
