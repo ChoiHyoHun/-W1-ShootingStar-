@@ -168,9 +168,9 @@ public class PlatformRandHp : MonoBehaviour
 
     private bool CanBreak()
     {
-        if (PlayerController.Instance.ACCStep >= hp || PlayerController.Instance.isDash)
+        if ((PlayerController.Instance.ACCStep >= hp && transform.position.y < PlayerController.Instance.bounceY) || PlayerController.Instance.isDash)
         {
-            // PlayerController.Instance.SaveBounce();
+            Debug.Log(PlayerController.Instance.bounceY + " " + transform.position.y);
             return true;
         }
         else
