@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +11,9 @@ public class ChargeBar : MonoBehaviour
     public int maxGauge = 100;     // 최대 게이지 값
     public float currentGauge;    // 현재 게이지 값 (float으로 변경)
     public float skillUsageRate = 1f; // 스킬 사용 시 게이지 소모 속도 (per second)
+    private Coroutine chargeEffectCoroutine; // 차지 색상 변화 코루틴 참조 변수
     [SerializeField] float autoChargeSpeed;
+    private bool isFlashing; // 반짝이는 중인지 여부
 
     void Start()
     {
@@ -36,6 +37,17 @@ public class ChargeBar : MonoBehaviour
         if (PlayerController.Instance != null && !PlayerController.Instance.isDash)
         {
             autoChargeSkill();
+        }
+
+        // 게이지가 맥스에 도달하고 반짝이는 중이지 않다면 반짝이기 시작
+        if (currentGauge >= maxGauge && !isFlashing)
+        {
+            StartChargeEffect();
+        }
+        // 게이지가 0이 되면 반짝이는 효과 중지
+        else if (currentGauge <= 0 && isFlashing)
+        {
+            StopChargeEffect();
         }
     }
 
@@ -106,4 +118,45 @@ public class ChargeBar : MonoBehaviour
         chargeBarSliderRight.value = currentGauge;
     }
 
+    // 차지 색상 효과 시작
+    void StartChargeEffect()
+    {
+        if (chargeEffectCoroutine == null)
+        {
+            chargeEffectCoroutine = StartCoroutine(ChargeEffectCoroutine());
+            isFlashing = true; // 반짝이는 중임을 표시
+        }
+    }
+
+    // 차지 색상 효과 중지
+    void StopChargeEffect()
+    {
+        if (chargeEffectCoroutine != null)
+        {
+            StopCoroutine(chargeEffectCoroutine);
+            chargeEffectCoroutine = null;
+        }
+        // 원래 색상으로 복원
+        chargeBarImageLeft.color = Color.gray;
+        chargeBarImageRight.color = Color.gray;
+        isFlashing = false; // 반짝이는 중이 아님을 표시
+    }
+
+    // 차지 색상 효과 코루틴
+    IEnumerator ChargeEffectCoroutine()
+    {
+        float timer = 0f;
+        float duration = 2f;
+
+        while (true)
+        {
+            timer += Time.deltaTime / duration;
+            float hue = Mathf.Repeat(timer, 1f);  // hue 값이 0에서 1 사이를 반복
+            Color newColor = Color.HSVToRGB(hue, 0.3f, 1f);  // HSV 값을 RGB로 변환
+            chargeBarImageLeft.color = newColor; // 왼쪽 이미지의 색상 변경
+            chargeBarImageRight.color = newColor; // 오른쪽 이미지의 색상 변경
+
+            yield return null;  // 다음 프레임까지 대기
+        }
+    }
 }
