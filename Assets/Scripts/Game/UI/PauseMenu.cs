@@ -9,13 +9,12 @@ public class PauseMenu : MonoBehaviour
     public static bool isPause = false;
     public Button resumeButton;
     public Button quitButton;
-
     public Button restartButton;
-
     public GameObject pauseMenuCanvas;
 
     void Start()
-    { // 메뉴 비활성화
+    {
+        // 메뉴 비활성화
         resumeButton.onClick.AddListener(Resume);
         quitButton.onClick.AddListener(Quit);
         restartButton.onClick.AddListener(Restart);
@@ -35,7 +34,6 @@ public class PauseMenu : MonoBehaviour
             }
         }
 
-
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             HardReset();
@@ -51,14 +49,19 @@ public class PauseMenu : MonoBehaviour
 
     public void Pause()
     {
+        pauseMenuCanvas.transform.SetAsLastSibling();
         pauseMenuCanvas.SetActive(true);
+
+
         Time.timeScale = 0f;
         isPause = true;
     }
+
     public void Quit()
     {
         Application.Quit();
     }
+
     public void Restart()
     {
         pauseMenuCanvas.SetActive(false);
@@ -67,10 +70,9 @@ public class PauseMenu : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    //최고 기록 임의로 삭제하는 버튼
+    // 최고 기록 임의로 삭제하는 버튼
     private void HardReset()
     {
         PlayerPrefs.DeleteKey("BestScore");
     }
-
 }
