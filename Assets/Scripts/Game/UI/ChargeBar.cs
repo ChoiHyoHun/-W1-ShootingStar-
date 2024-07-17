@@ -21,11 +21,6 @@ public class ChargeBar : MonoBehaviour
         SetBackgroundTransparent(chargeBarSliderLeft);
         SetBackgroundTransparent(chargeBarSliderRight);
 
-        if (chargeBarImageLeft != null && chargeBarImageRight != null)
-        {
-            StartCoroutine(PastelEffect());
-        }
-
         if (chargeBarSliderLeft != null && chargeBarSliderRight != null)
         {
             chargeBarSliderLeft.maxValue = maxGauge; // 슬라이더의 최대 값을 설정
