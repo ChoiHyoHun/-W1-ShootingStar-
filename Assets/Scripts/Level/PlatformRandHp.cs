@@ -16,8 +16,8 @@ public class PlatformRandHp : MonoBehaviour
     SpriteRenderer pRenderer;
 
 
-    public popUpScore scoreTextPfb;
-    private popUpScore scoreText;
+    public PopUpScore scoreTextPfb;
+    private PopUpScore scoreText;
 
     /*
     [SerializeField]
@@ -29,8 +29,14 @@ public class PlatformRandHp : MonoBehaviour
     TextMeshProUGUI hpText;
 
     //색들
-    string greenHex = "#008000";
-    Color green;
+    string colorCode0 = "#e0ffff";
+    Color color0;
+    string colorCode1 = "#48d1cc";
+    Color color1;
+    string colorCode2 = "#4169e1";
+    Color color2;
+    string colorCode3 = "#000080";
+    Color color3;
 
     private Color ColorCodeToColor(string colorCode, Color color)
     {
@@ -139,16 +145,16 @@ public class PlatformRandHp : MonoBehaviour
         switch (hp)
         {
             case 0: //파
-                pRenderer.color = Color.blue;
+                pRenderer.color = ColorCodeToColor(colorCode0, color0);
                 break;
             case 1: //초
-                pRenderer.color = ColorCodeToColor(greenHex, green);
+                pRenderer.color = ColorCodeToColor(colorCode1, color1);
                 break;
             case 2: //노
-                pRenderer.color = Color.yellow;
+                pRenderer.color = ColorCodeToColor(colorCode2, color2);
                 break;
             case 3: //빨
-                pRenderer.color = Color.red;
+                pRenderer.color = ColorCodeToColor(colorCode3, color3);
                 break;
         }
     }

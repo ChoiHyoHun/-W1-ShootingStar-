@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 
-public class popUpScore : MonoBehaviour
+public class PopUpScore : MonoBehaviour
 {
     [SerializeField]
     TextMeshProUGUI popUpText;

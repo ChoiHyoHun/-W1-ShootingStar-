@@ -9,8 +9,8 @@ public class PlatformStaticHp : MonoBehaviour
     [SerializeField]
     private int hp;
 
-    public popUpScore scoreTextPfb;
-    private popUpScore scoreText;
+    public PopUpScore scoreTextPfb;
+    private PopUpScore scoreText;
 
     //[SerializeField]
     //private TextMeshProUGUI popText;
