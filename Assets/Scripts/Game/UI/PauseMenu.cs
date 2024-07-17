@@ -34,10 +34,7 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
         }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Restart();
-        }
+
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
