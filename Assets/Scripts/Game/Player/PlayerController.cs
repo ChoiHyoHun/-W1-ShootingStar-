@@ -289,7 +289,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         SaveAcc();
 
-        // chargeBar.ChargeSkill(10f);
+        chargeBar.ChargeSkill(10f);
 
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
