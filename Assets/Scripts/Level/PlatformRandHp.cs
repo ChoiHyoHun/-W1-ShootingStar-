@@ -6,7 +6,7 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine.UI;
 
-public class PlatformRandHpTest : MonoBehaviour
+public class PlatformRandHp : MonoBehaviour
 {
     [SerializeField]
     private int hp;
