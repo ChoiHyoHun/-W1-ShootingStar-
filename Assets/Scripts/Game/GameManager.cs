@@ -20,7 +20,6 @@ public class GameManager : Singleton<GameManager>
         UpdateBestScoreUI();       // UI에 최고 기록 표시 업데이트
     }
 
-
     // 점수를 추가하고 UI 업데이트
     public void AddScore(int points)
     {
@@ -75,7 +74,6 @@ public class GameManager : Singleton<GameManager>
             // 플레이어 캐릭터 파괴
             Destroy(PlayerController.Instance.gameObject);
         }
-
         StartCoroutine(WaitForDeath());
     }
 
@@ -85,4 +83,9 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 다시 로드
     }
+
+
+
+
+
 }

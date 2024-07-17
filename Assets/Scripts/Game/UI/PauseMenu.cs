@@ -38,6 +38,11 @@ public class PauseMenu : MonoBehaviour
         {
             Restart();
         }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            HardReset();
+        }
     }
 
     public void Resume()
@@ -66,4 +71,11 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    //최고 기록 임의로 삭제하는 버튼
+    private void HardReset()
+    {
+        PlayerPrefs.DeleteKey("BestScore");
+    }
+
 }
