@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public Button startButton;
-
+    private bool startGame = false;
     void Start()
     {
         if (startButton != null)
@@ -15,8 +15,17 @@ public class MainMenu : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && startGame == false)
+        {
+            StartGame();
+        }
+    }
+
     void StartGame()
     {
         SceneManager.LoadScene("GameScene");
+        startGame = true;
     }
 }
