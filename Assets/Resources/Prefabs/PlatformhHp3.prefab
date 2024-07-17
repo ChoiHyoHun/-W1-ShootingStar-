@@ -381,3 +381,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3
+  scoreTextPfb: {fileID: 1848880441298860661, guid: d18b6632b92218d47a114fb3360f76d8, type: 3}

@@ -145,6 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 0
+  scoreTextPfb: {fileID: 1848880441298860661, guid: d18b6632b92218d47a114fb3360f76d8, type: 3}
 --- !u!1 &1250451914981255224
 GameObject:
   m_ObjectHideFlags: 0

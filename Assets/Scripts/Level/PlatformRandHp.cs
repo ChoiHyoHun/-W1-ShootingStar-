@@ -15,6 +15,10 @@ public class PlatformRandHp : MonoBehaviour
 
     SpriteRenderer pRenderer;
 
+
+    public popUpScore scoreTextPfb;
+    private popUpScore scoreText;
+
     /*
     [SerializeField]
     TextMeshProUGUI hpTextPfb;
@@ -88,6 +92,10 @@ public class PlatformRandHp : MonoBehaviour
                     PlayerController.Instance.Bounce();
                 }
                 GameManager.Instance.AddScore(CalculateScore());
+
+                scoreText = Instantiate(scoreTextPfb, transform.position, Quaternion.identity);
+                scoreText.SettingText(CalculateScore());
+
                 gameObject.SetActive(false);
                 //Destroy(hpText.gameObject);
             }
