@@ -1,13 +1,13 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class GameManager : Singleton<GameManager>
 {
-    public Text scoreText;         // UI에 표시할 점수를 보여줄 Text 컴포넌트
-    public Text bestScoreText;     // UI에 표시할 최고 기록을 보여줄 Text 컴포넌트
+    public TextMeshProUGUI scoreText;         // UI에 표시할 점수를 보여줄 Text 컴포넌트
+    public TextMeshProUGUI bestScoreText;     // UI에 표시할 최고 기록을 보여줄 Text 컴포넌트
     private int score;             // 현재 점수
     private int bestScore;         // 최고 기록
 
