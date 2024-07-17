@@ -80,20 +80,7 @@ public class ChargeBar : MonoBehaviour
         }
     }
 
-    // 스킬을 사용하는 함수
     public void UseSkill()
-    {
-        // 게이지를 감소시킴
-        currentGauge -= skillUsageRate * Time.deltaTime;
-        if (currentGauge < 0)
-        {
-            currentGauge = 0;
-        }
-        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
-        chargeBarSliderRight.value = currentGauge;
-    }
-
-    public void UseSkill2()
     {
         currentGauge = 0;
 
