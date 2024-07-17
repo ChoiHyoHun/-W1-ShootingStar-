@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Burst.CompilerServices;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class PlatformActivator : MonoBehaviour
