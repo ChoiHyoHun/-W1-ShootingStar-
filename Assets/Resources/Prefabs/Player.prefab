@@ -220,11 +220,13 @@ MonoBehaviour:
   sprite1: {fileID: 5244113820816319515}
   sprite2: {fileID: 114023195785599324}
   velocityTextPfb: {fileID: 543421042355078957, guid: 13b705342f56c2e4d951172a8d934eff, type: 3}
+  particle: {fileID: 7226944661179863180, guid: 830fe3b5ec3cf7e43948c9c8e2b9a583, type: 3}
   HorizontalSpeed: 7
   dashSpeed: 30
   bounceForce: 25
   maxFallingSpeed: 30
   colorStep: 4
+  colorRange: 0
   isDash: 0
   ACCStep: 0
 --- !u!1 &8077843942856695422

@@ -17,6 +17,8 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] TextMeshProUGUI velocityTextPfb;
     TextMeshProUGUI velocityText;
 
+    [SerializeField] ParticleSystem particle;
+
     [SerializeField] float HorizontalSpeed;
     [SerializeField] float dashSpeed;
     [SerializeField] float bounceForce;
@@ -24,11 +26,9 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] int colorStep;
     Vector3 rotationSpeed; // 초당 90도 회전 (Z축 기준)
     [SerializeField] float colorRange;
-    float holdTime;
     public bool isDash;
     public int ACCStep;
     Coroutine dashCoroutine;
-    Coroutine colorCoroutine;
     Coroutine bounceCoroutine = null;
     float saveAcc;
     bool isBouncing = false;
@@ -48,6 +48,8 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
+
+        dash2();
 
         if (!isDash)
         {
@@ -75,7 +77,7 @@ public class PlayerController : Singleton<PlayerController>
             rigid.velocity = new Vector2(horizontalInput * HorizontalSpeed, rigid.velocity.y);
         }
 
-        dash();
+        // dash();
 
         if (rigid.velocity.y < -maxFallingSpeed)
         {
@@ -105,17 +107,7 @@ public class PlayerController : Singleton<PlayerController>
             case 0:
                 ColorUtility.TryParseHtmlString("#0000ff", out targetColor);
 
-                // if (colorCoroutine != null)
-                // {
-                //     StopCoroutine(colorCoroutine);
-                //     colorCoroutine = StartCoroutine(LerpColorChnage(sprite.color, targetColor));
-                // }
-                // else
-                // {
-
-                // }
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
@@ -123,7 +115,6 @@ public class PlayerController : Singleton<PlayerController>
                 ColorUtility.TryParseHtmlString("#008000", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
@@ -132,7 +123,6 @@ public class PlayerController : Singleton<PlayerController>
                 ColorUtility.TryParseHtmlString("#ffff00", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
@@ -141,7 +131,6 @@ public class PlayerController : Singleton<PlayerController>
                 ColorUtility.TryParseHtmlString("#ff0000", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                // StartCoroutine(LerpColorChnage(sprite2.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
         }
@@ -181,7 +170,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void dash()
     {
-        if (Input.GetKey(KeyCode.Space) && chargeBar.currentGauge > 0)
+        if ((Input.GetKey(KeyCode.Space) || Input.GetKey(KeyCode.DownArrow)) && chargeBar.currentGauge > 0)
         {
             chargeBar.UseSkill();
 
@@ -216,7 +205,59 @@ public class PlayerController : Singleton<PlayerController>
                 StopCoroutine(dashCoroutine);
             }
 
-            holdTime = 0f;
+        }
+    }
+
+    void dash2()
+    {
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge)
+        {
+
+            chargeBar.UseSkill2();
+
+            if (!isDash)
+            {
+                isDash = true;
+
+                // 잠깐 정지
+                rigid.velocity = Vector2.zero;
+
+                if (dashCoroutine != null)
+                {
+                    StopCoroutine(dashCoroutine);
+                    dashCoroutine = StartCoroutine(dashEffect());
+                }
+                else
+                {
+                    dashCoroutine = StartCoroutine(dashEffect());
+                }
+
+                velocityText.SetText("<#f98cde>Fever!");
+            }
+
+            StartCoroutine(dashing());
+
+        }
+    }
+
+    IEnumerator dashing()
+    {
+        float duration = 1f;
+        float currentTime = 0;
+        while (currentTime < duration)
+        {
+            currentTime += Time.deltaTime;
+
+            if (Mathf.Abs(rigid.velocity.y) < maxFallingSpeed)
+                rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
+
+            yield return null;
+        }
+
+        if (isDash)
+        {
+            isDash = false;
+            StopCoroutine(dashCoroutine);
         }
     }
 
@@ -248,7 +289,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         SaveAcc();
 
-        chargeBar.ChargeSkill(10f);
+        // chargeBar.ChargeSkill(10f);
 
         rigid.velocity = Vector2.zero;
         rigid.AddForce(Vector2.up * bounceForce, ForceMode2D.Impulse);
@@ -293,6 +334,9 @@ public class PlayerController : Singleton<PlayerController>
 
     void OnDestroy()
     {
+        ParticleSystem p = Instantiate(particle, transform.position, quaternion.identity);
+        var module = p.main;
+        module.startColor = sprite1.color;
         Destroy(velocityText.gameObject);
     }
 

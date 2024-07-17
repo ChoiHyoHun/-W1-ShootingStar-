@@ -30,6 +30,14 @@ public class ChargeBar : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (PlayerController.Instance != null && !PlayerController.Instance.isDash)
+        {
+            ChargeSkill2();
+        }
+    }
+
     // 슬라이더의 백그라운드 이미지를 투명하게 설정하는 함수
     void SetBackgroundTransparent(Slider slider)
     {
@@ -66,10 +74,29 @@ public class ChargeBar : MonoBehaviour
         chargeBarSliderRight.value = currentGauge;
     }
 
+    public void UseSkill2()
+    {
+        currentGauge = 0;
+
+        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderRight.value = currentGauge;
+    }
+
     // 스킬 게이지를 증가시키는 함수
     public void ChargeSkill(float amount)
     {
         currentGauge += amount;
+        if (currentGauge > maxGauge)
+        {
+            currentGauge = maxGauge;
+        }
+        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderRight.value = currentGauge;
+    }
+
+    public void ChargeSkill2()
+    {
+        currentGauge += 20 * Time.deltaTime;
         if (currentGauge > maxGauge)
         {
             currentGauge = maxGauge;
