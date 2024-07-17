@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (bestScoreText != null)
         {
-            bestScoreText.text = "Best Score: " + bestScore.ToString();
+            bestScoreText.text = "Best: " + bestScore.ToString();
         }
     }
 

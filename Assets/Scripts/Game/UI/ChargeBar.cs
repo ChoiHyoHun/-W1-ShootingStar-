@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ChargeBar : MonoBehaviour
 {
@@ -14,6 +15,9 @@ public class ChargeBar : MonoBehaviour
     private Coroutine chargeEffectCoroutine; // 차지 색상 변화 코루틴 참조 변수
     [SerializeField] float autoChargeSpeed;
     private bool isFlashing; // 반짝이는 중인지 여부
+
+    public GameObject goSpace;
+
 
     void Start()
     {
@@ -30,6 +34,8 @@ public class ChargeBar : MonoBehaviour
             chargeBarSliderLeft.value = currentGauge; // 초기 게이지 값 설정
             chargeBarSliderRight.value = currentGauge;
         }
+
+        goSpace.gameObject.SetActive(false); // 텍스트 비활성화
     }
 
     void Update()
@@ -125,6 +131,7 @@ public class ChargeBar : MonoBehaviour
         {
             chargeEffectCoroutine = StartCoroutine(ChargeEffectCoroutine());
             isFlashing = true; // 반짝이는 중임을 표시
+            goSpace.gameObject.SetActive(true);// 텍스트 활성화
         }
     }
 
@@ -142,6 +149,7 @@ public class ChargeBar : MonoBehaviour
         chargeBarImageLeft.color = targetColor;
         chargeBarImageRight.color = targetColor;
         isFlashing = false; // 반짝이는 중이 아님을 표시
+        goSpace.gameObject.SetActive(false);// 텍스트 비활성화
     }
 
     // 차지 색상 효과 코루틴
