@@ -2260,7 +2260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialMapPrefabs:
-  - {fileID: 989914252056636910, guid: 4b7433ff19144a841b4c4b161fe9e8ae, type: 3}
+  - {fileID: 6072289962589263989, guid: b0d3047d65596c840b8c6388355f6e60, type: 3}
 --- !u!4 &1457560229
 Transform:
   m_ObjectHideFlags: 0
