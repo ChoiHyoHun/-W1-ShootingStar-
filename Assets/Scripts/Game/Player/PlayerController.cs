@@ -30,10 +30,12 @@ public class PlayerController : Singleton<PlayerController>
     float saveAcc;
     bool isBouncing = false;
     WallMove wallmove;
+    Canvas canvas;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
+        rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         trail = GetComponentInChildren<TrailRenderer>();
         wallmove = GetComponent<WallMove>();
 
@@ -41,8 +43,9 @@ public class PlayerController : Singleton<PlayerController>
         // slider = FindObjectOfType<Slider>();
         chargeBar = FindObjectOfType<ChargeBar>();
 
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         if (velocityTextPfb != null)
-            velocityText = Instantiate(velocityTextPfb, GameObject.Find("Canvas").GetComponent<Canvas>().transform);
+            velocityText = Instantiate(velocityTextPfb, new Vector3(0, 4, 0), Quaternion.identity, canvas.transform);
     }
 
     // Update is called once per frame
@@ -111,7 +114,9 @@ public class PlayerController : Singleton<PlayerController>
 
     void LateUpdate()
     {
-        velocityText.transform.position = transform.position;
+        // Vector3 textPosition = Camera.main.WorldToScreenPoint(transform.position);
+        // velocityText.transform.position = textPosition;
+        velocityText.transform.position = new Vector3(transform.position.x, velocityText.transform.position.y, velocityText.transform.position.z);
     }
 
     void changeColor()
