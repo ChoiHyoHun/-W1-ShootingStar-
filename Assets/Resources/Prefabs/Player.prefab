@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 5628292455612427550}
   - component: {fileID: 8455020157604266603}
   - component: {fileID: 8465723271165459226}
+  - component: {fileID: 3055316112583859632}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -229,6 +230,19 @@ MonoBehaviour:
   colorRange: 0
   isDash: 0
   ACCStep: 0
+--- !u!114 &3055316112583859632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5723841017479345918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b6b738b8f747dd4b906a1fc5436fb00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallTag: Wall
 --- !u!1 &8077843942856695422
 GameObject:
   m_ObjectHideFlags: 0

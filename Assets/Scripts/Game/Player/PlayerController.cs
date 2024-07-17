@@ -1,10 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Timers;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerController : Singleton<PlayerController>
 {
@@ -32,18 +29,20 @@ public class PlayerController : Singleton<PlayerController>
     Coroutine bounceCoroutine = null;
     float saveAcc;
     bool isBouncing = false;
-    public WallMove wallmove;
+    WallMove wallmove;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         trail = GetComponentInChildren<TrailRenderer>();
+        wallmove = GetComponent<WallMove>();
 
         colorRange = maxFallingSpeed / colorStep;
         // slider = FindObjectOfType<Slider>();
         chargeBar = FindObjectOfType<ChargeBar>();
 
-        velocityText = Instantiate(velocityTextPfb, GameObject.Find("Canvas").GetComponent<Canvas>().transform);
+        if (velocityTextPfb != null)
+            velocityText = Instantiate(velocityTextPfb, GameObject.Find("Canvas").GetComponent<Canvas>().transform);
     }
 
     // Update is called once per frame
@@ -77,7 +76,8 @@ public class PlayerController : Singleton<PlayerController>
             float horizontalInput = Input.GetAxis("Horizontal");
             // Debug.Log(horizontalInput);
 
-            if(wallmove == null){
+            if (wallmove == null)
+            {
 
                 Debug.Log("WallMove Refer is null");
                 return;
@@ -86,12 +86,14 @@ public class PlayerController : Singleton<PlayerController>
             ///Debug.Log(wallmove.CanMoveRight);
             // Debug.Log(wallmove.CanMoveLeft);
 
-            if(horizontalInput > 0 && !wallmove.CanMoveRight){
+            if (horizontalInput > 0 && !wallmove.CanMoveRight)
+            {
 
                 horizontalInput = 0;
             }
 
-            else if(horizontalInput < 0 && !wallmove.CanMoveLeft){
+            else if (horizontalInput < 0 && !wallmove.CanMoveLeft)
+            {
 
                 horizontalInput = 0;
             }
