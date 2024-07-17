@@ -223,7 +223,7 @@ public class PlayerController : Singleton<PlayerController>
 
     IEnumerator dashing()
     {
-        float duration = 1f;
+        float duration = 2f;
         float currentTime = 0;
         while (currentTime < duration)
         {

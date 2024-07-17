@@ -1441,7 +1441,7 @@ MonoBehaviour:
   maxGauge: 100
   currentGauge: 0
   skillUsageRate: 50
-  autoChargeSpeed: 5
+  autoChargeSpeed: 3
   goSpace: {fileID: 964934929}
 --- !u!1 &553841170
 GameObject:
