@@ -162,7 +162,7 @@ public class PlatformRandHp : MonoBehaviour
     public int CalculateScore()
     {
         int basicPoint = 100;
-        return basicPoint * (1 + hp);
+        return basicPoint * (1 + 2 * hp);
 
     }
 
