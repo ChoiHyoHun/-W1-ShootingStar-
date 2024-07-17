@@ -103,16 +103,15 @@ public class PlayerController : Singleton<PlayerController>
         Color targetColor;
         switch (ACCStep)
         {
-            // 보라
             case 0:
-                ColorUtility.TryParseHtmlString("#0000ff", out targetColor);
+                ColorUtility.TryParseHtmlString("#e0ffff", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 1:
-                ColorUtility.TryParseHtmlString("#008000", out targetColor);
+                ColorUtility.TryParseHtmlString("#48d1cc", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
@@ -120,7 +119,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
             case 2:
-                ColorUtility.TryParseHtmlString("#ffff00", out targetColor);
+                ColorUtility.TryParseHtmlString("#4169e1", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
@@ -128,7 +127,7 @@ public class PlayerController : Singleton<PlayerController>
 
 
             case 3:
-                ColorUtility.TryParseHtmlString("#ff0000", out targetColor);
+                ColorUtility.TryParseHtmlString("#000080", out targetColor);
 
                 StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
                 StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));

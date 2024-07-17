@@ -351,13 +351,29 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1148469315231028973, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
-      propertyPath: m_Mesh
-      value: 
+    - target: {fileID: 114023195785599324, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+      propertyPath: m_Color.b
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2315875100043785719, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
-      propertyPath: m_Mesh
-      value: 
+    - target: {fileID: 114023195785599324, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023195785599324, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8784314
+      objectReference: {fileID: 0}
+    - target: {fileID: 5244113820816319515, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5244113820816319515, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5244113820816319515, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
+      propertyPath: m_Color.r
+      value: 0.8784314
       objectReference: {fileID: 0}
     - target: {fileID: 5723841017479345918, guid: 3d270ddd174dfea478f6bc6d870dc0b5, type: 3}
       propertyPath: m_Name
@@ -1333,6 +1349,7 @@ MonoBehaviour:
   maxGauge: 100
   currentGauge: 0
   skillUsageRate: 50
+  autoChargeSpeed: 5
 --- !u!1 &843421561
 GameObject:
   m_ObjectHideFlags: 0

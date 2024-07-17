@@ -12,6 +12,7 @@ public class ChargeBar : MonoBehaviour
     public int maxGauge = 100;     // 최대 게이지 값
     public float currentGauge;    // 현재 게이지 값 (float으로 변경)
     public float skillUsageRate = 1f; // 스킬 사용 시 게이지 소모 속도 (per second)
+    [SerializeField] float autoChargeSpeed;
 
     void Start()
     {
@@ -34,7 +35,7 @@ public class ChargeBar : MonoBehaviour
     {
         if (PlayerController.Instance != null && !PlayerController.Instance.isDash)
         {
-            ChargeSkill2();
+            autoChargeSkill();
         }
     }
 
@@ -94,9 +95,9 @@ public class ChargeBar : MonoBehaviour
         chargeBarSliderRight.value = currentGauge;
     }
 
-    public void ChargeSkill2()
+    public void autoChargeSkill()
     {
-        currentGauge += 20 * Time.deltaTime;
+        currentGauge += autoChargeSpeed * Time.deltaTime;
         if (currentGauge > maxGauge)
         {
             currentGauge = maxGauge;
