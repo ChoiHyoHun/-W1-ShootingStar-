@@ -118,7 +118,7 @@ public class PlatformRandHp : MonoBehaviour
 
     private void RandomSpawn()
     {
-        if (Random.Range(0, 2) == 1)
+        if (Random.Range(0.0f, 1.0f) >= 0.4)
         {
             gameObject.SetActive(true);
             hp = Random.Range(0, hpLimit);

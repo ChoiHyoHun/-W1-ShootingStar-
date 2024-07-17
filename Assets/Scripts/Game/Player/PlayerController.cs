@@ -44,7 +44,10 @@ public class PlayerController : Singleton<PlayerController>
 
         canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
         if (velocityTextPfb != null)
+        {
             velocityText = Instantiate(velocityTextPfb, new Vector3(0, 4, 0), Quaternion.identity, canvas.transform);
+            velocityText.transform.SetAsFirstSibling();
+        }
     }
 
     // Update is called once per frame
@@ -191,7 +194,7 @@ public class PlayerController : Singleton<PlayerController>
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge)
         {
 
-            chargeBar.UseSkill2();
+            chargeBar.UseSkill();
 
             if (!isDash)
             {
