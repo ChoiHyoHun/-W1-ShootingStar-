@@ -10,6 +10,8 @@ public class GameManager : Singleton<GameManager>
     private int score;             // 현재 점수
     private int bestScore;         // 최고 기록
 
+
+
     void Start()
     {
         LoadBestScore();           // 최고 기록 불러오기
@@ -69,7 +71,12 @@ public class GameManager : Singleton<GameManager>
     {
         if (PlayerController.Instance != null)
         {
-            Destroy(PlayerController.Instance.gameObject); // 플레이어 캐릭터 파괴
+            // 플레이어 캐릭터의 위치를 저장
+            Vector3 playerPosition = PlayerController.Instance.transform.position;
+            // 플레이어 캐릭터 파괴
+            Destroy(PlayerController.Instance.gameObject);
+
+
         }
         StartCoroutine(WaitForDeath());
     }
@@ -80,5 +87,4 @@ public class GameManager : Singleton<GameManager>
         yield return new WaitForSeconds(2);
         SceneManager.LoadScene("GameScene");
     }
-
 }
