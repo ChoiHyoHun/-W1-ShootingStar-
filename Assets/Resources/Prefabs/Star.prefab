@@ -240,7 +240,6 @@ GameObject:
   - component: {fileID: 3847260499022499235}
   - component: {fileID: 5688257101459681410}
   - component: {fileID: 2868878298993213712}
-  - component: {fileID: 2312456465706620551}
   m_Layer: 0
   m_Name: Star
   m_TagString: Player
@@ -258,7 +257,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 5.94, y: -3.06, z: 0}
-  m_LocalScale: {x: 0.4078, y: 0.4078, z: 0.4078}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.4078}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 839287456200547107}
@@ -350,29 +349,6 @@ PolygonCollider2D:
       - {x: 0.16323103, y: -0.29189616}
       - {x: 0.50328887, y: -0.2850076}
   m_UseDelaunayMesh: 0
---- !u!114 &2312456465706620551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6569625864500980525}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb9307659224af4448d6a237e2e8c0c8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite1: {fileID: 7353399244002992649}
-  sprite2: {fileID: 6172442502256944177}
-  velocityTextPfb: {fileID: 543421042355078957, guid: 13b705342f56c2e4d951172a8d934eff, type: 3}
-  HorizontalSpeed: 7
-  dashSpeed: 30
-  bounceForce: 25
-  maxFallingSpeed: 30
-  colorStep: 4
-  colorRange: 0
-  isDash: 0
-  ACCStep: 0
 --- !u!1 &8171373781418122196
 GameObject:
   m_ObjectHideFlags: 0
