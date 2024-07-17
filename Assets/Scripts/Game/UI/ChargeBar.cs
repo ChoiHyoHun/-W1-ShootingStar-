@@ -137,8 +137,10 @@ public class ChargeBar : MonoBehaviour
             chargeEffectCoroutine = null;
         }
         // 원래 색상으로 복원
-        chargeBarImageLeft.color = Color.gray;
-        chargeBarImageRight.color = Color.gray;
+        Color targetColor;
+        ColorUtility.TryParseHtmlString("#3B7171", out targetColor);
+        chargeBarImageLeft.color = targetColor;
+        chargeBarImageRight.color = targetColor;
         isFlashing = false; // 반짝이는 중이 아님을 표시
     }
 
