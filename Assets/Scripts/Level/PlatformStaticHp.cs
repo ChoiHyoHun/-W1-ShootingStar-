@@ -79,18 +79,8 @@ public class PlatformStaticHp : MonoBehaviour
 
     private bool CanBreak()
     {
-        // if (PlayerController.Instance.ACCStep >= hp || PlayerController.Instance.isDash)
-        // {
-        //     return true;
-        // }
-        // else
-        // {
-        //     return false;
-        // }
-
-        if ((PlayerController.Instance.ACCStep >= hp && transform.position.y < PlayerController.Instance.bounceY) || PlayerController.Instance.isDash)
+        if (PlayerController.Instance.ACCStep >= hp || PlayerController.Instance.isDash)
         {
-            Debug.Log(PlayerController.Instance.bounceY + " " + transform.position.y);
             return true;
         }
         else

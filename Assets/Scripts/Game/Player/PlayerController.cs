@@ -25,7 +25,6 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] float colorRange;
     public bool isDash;
     public int ACCStep;
-    public float bounceY = 0;
     Coroutine dashCoroutine;
     Coroutine bounceCoroutine = null;
     float saveAcc;
@@ -304,8 +303,6 @@ public class PlayerController : Singleton<PlayerController>
     public void SaveAcc()
     {
         saveAcc = ACCStep;
-        bounceY = rigid.position.y;
-
         // Debug.Log("[Before]: " + saveAcc);
     }
 
