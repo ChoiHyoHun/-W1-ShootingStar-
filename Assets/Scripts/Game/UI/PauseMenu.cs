@@ -18,7 +18,7 @@ public class PauseMenu : MonoBehaviour
     { // 메뉴 비활성화
         resumeButton.onClick.AddListener(Resume);
         quitButton.onClick.AddListener(Quit);
-        // restartButton.onClick.AddListener(Restart);
+        restartButton.onClick.AddListener(Restart);
     }
 
     void Update()
