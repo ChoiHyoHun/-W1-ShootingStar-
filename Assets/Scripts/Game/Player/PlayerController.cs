@@ -35,7 +35,6 @@ public class PlayerController : Singleton<PlayerController>
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-        rigid.collisionDetectionMode = CollisionDetectionMode2D.Continuous;
         trail = GetComponentInChildren<TrailRenderer>();
         wallmove = GetComponent<WallMove>();
 
