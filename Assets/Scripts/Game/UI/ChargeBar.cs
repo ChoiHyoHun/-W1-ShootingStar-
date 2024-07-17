@@ -82,9 +82,34 @@ public class ChargeBar : MonoBehaviour
 
     public void UseSkill()
     {
-        currentGauge = 0;
+        // currentGauge = 0;
 
-        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        // chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        // chargeBarSliderRight.value = currentGauge;
+
+        StartCoroutine(gaugeDecreasing());
+    }
+
+    IEnumerator gaugeDecreasing()
+    {
+        goSpace.SetActive(false);
+
+        float duration = 1.0f; // 애니메이션 지속 시간
+        float startValue = maxGauge; // 슬라이더의 초기 값
+        float endValue = 0; // 슬라이더의 최종 값
+        float elapsedTime = 0; // 경과 시간
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            currentGauge = Mathf.Lerp(startValue, endValue, elapsedTime / duration);
+            chargeBarSliderLeft.value = currentGauge;
+            chargeBarSliderRight.value = currentGauge;
+            yield return null;
+        }
+
+        currentGauge = endValue;
+        chargeBarSliderLeft.value = currentGauge; // 애니메이션이 끝난 후 최종 값을 설정
         chargeBarSliderRight.value = currentGauge;
     }
 
