@@ -74,35 +74,29 @@ public class PlayerController : Singleton<PlayerController>
 
     void FixedUpdate()
     {
-        if (!isDash)
+
+        float horizontalInput = Input.GetAxis("Horizontal");
+        // Debug.Log(horizontalInput);
+
+        if (wallmove == null)
         {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            // Debug.Log(horizontalInput);
-
-            if (wallmove == null)
-            {
-
-                Debug.Log("WallMove Refer is null");
-                return;
-            }
-
-            ///Debug.Log(wallmove.CanMoveRight);
-            // Debug.Log(wallmove.CanMoveLeft);
-
-            if (horizontalInput > 0 && !wallmove.CanMoveRight)
-            {
-
-                horizontalInput = 0;
-            }
-
-            else if (horizontalInput < 0 && !wallmove.CanMoveLeft)
-            {
-
-                horizontalInput = 0;
-            }
-
-            rigid.velocity = new Vector2(horizontalInput * HorizontalSpeed, rigid.velocity.y);
+            Debug.Log("WallMove Refer is null");
+            return;
         }
+
+        if (horizontalInput > 0 && !wallmove.CanMoveRight)
+        {
+
+            horizontalInput = 0;
+        }
+
+        else if (horizontalInput < 0 && !wallmove.CanMoveLeft)
+        {
+
+            horizontalInput = 0;
+        }
+
+        rigid.velocity = new Vector2(horizontalInput * HorizontalSpeed, rigid.velocity.y);
 
         // dash();
 
