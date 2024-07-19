@@ -1,4 +1,5 @@
 using System.Collections;
+using JetBrains.Annotations;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] float dashSpeed;
     [SerializeField] float bounceForce;
     [SerializeField] float maxFallingSpeed;
+
     [SerializeField] int colorStep;
     Vector3 rotationSpeed; // 초당 90도 회전 (Z축 기준)
     [SerializeField] float colorRange;
@@ -31,6 +33,9 @@ public class PlayerController : Singleton<PlayerController>
     bool isBouncing = false;
     WallMove wallmove;
     Canvas canvas;
+
+    //추가
+    bool onMoving;
 
     void Awake()
     {
@@ -48,6 +53,8 @@ public class PlayerController : Singleton<PlayerController>
             velocityText = Instantiate(velocityTextPfb, new Vector3(0, 4, 0), Quaternion.identity, canvas.transform);
             velocityText.transform.SetAsFirstSibling();
         }
+
+        onMoving = false;
     }
 
     // Update is called once per frame
@@ -71,34 +78,93 @@ public class PlayerController : Singleton<PlayerController>
                 transform.rotation = Quaternion.Euler(0, 0, 180);
         }
 
+        //추가
+        //float horizontalInput = Input.GetAxis("Horizontal");
+        if ((Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D)) && !onMoving)
+        {
+            StartCoroutine(MoveRight());
+        }
+        else if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A)) && !onMoving)
+        {
+            StartCoroutine(MoveLeft());
+        }
+
+
+        /*
+                if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                {
+                    Debug.Log("Left");
+                    Vector2 playerPos = transform.position;
+                    playerPos.x -= 2.0f;
+                    transform.position = playerPos;
+
+                }
+
+                if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
+                    Debug.Log("Right");
+                    Vector2 playerPos = transform.position;
+                    playerPos.x += 2.0f;
+                    transform.position = playerPos;
+                }
+        */
     }
 
     void FixedUpdate()
     {
-
-        float horizontalInput = Input.GetAxis("Horizontal");
-        // Debug.Log(horizontalInput);
-
-        if (wallmove == null)
+        //추가
+        //위치 보정 코드들 
+        if (transform.position.x < -5 && transform.position.x > -7)
         {
-            Debug.Log("WallMove Refer is null");
-            return;
+            Vector2 playerPos = transform.position;
+            playerPos.x = -6.0f;
+            transform.position = playerPos;
         }
 
-        if (horizontalInput > 0 && !wallmove.CanMoveRight)
+        if (transform.position.x < -3 && transform.position.x > -5)
         {
-
-            horizontalInput = 0;
+            Vector2 playerPos = transform.position;
+            playerPos.x = -4.0f;
+            transform.position = playerPos;
         }
 
-        else if (horizontalInput < 0 && !wallmove.CanMoveLeft)
+        if (transform.position.x < -1 && transform.position.x > -3)
         {
-
-            horizontalInput = 0;
+            Vector2 playerPos = transform.position;
+            playerPos.x = -2.0f;
+            transform.position = playerPos;
         }
 
-        rigid.velocity = new Vector2(horizontalInput * HorizontalSpeed, rigid.velocity.y);
+        if (transform.position.x < 1 && transform.position.x > -1)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 0f;
+            transform.position = playerPos;
+        }
 
+        if (transform.position.x < 3 && transform.position.x > 1)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 2.0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < 5 && transform.position.x > 3)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 4.0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < 7 && transform.position.x > 5)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 6.0f;
+            transform.position = playerPos;
+        }
+
+
+        rigid.velocity = new Vector2(rigid.velocity.x, rigid.velocity.y);
         if (rigid.velocity.y < -maxFallingSpeed)
         {
             rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
@@ -107,8 +173,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void LateUpdate()
     {
-        // Vector3 textPosition = Camera.main.WorldToScreenPoint(transform.position);
-        // velocityText.transform.position = textPosition;
+        Debug.Log(rigid.velocity.y);
         velocityText.transform.position = new Vector3(transform.position.x, velocityText.transform.position.y, velocityText.transform.position.z);
     }
 
@@ -191,6 +256,8 @@ public class PlayerController : Singleton<PlayerController>
 
     void dash()
     {
+        //대쉬 조건이 스페이스바 없이 게이지가 다 차면 발동으로 변경
+        //기존 조건 (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge)
         {
 
@@ -229,8 +296,13 @@ public class PlayerController : Singleton<PlayerController>
         {
             currentTime += Time.deltaTime;
 
+            //대쉬 속도 = 4단계 속도가 아니라 대쉬 전용 속도로 변환
+            /*
             if (Mathf.Abs(rigid.velocity.y) < maxFallingSpeed)
                 rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
+            */
+            if (Mathf.Abs(rigid.velocity.y) < dashSpeed)
+                rigid.velocity = new Vector2(rigid.velocity.x, -dashSpeed);
 
             yield return null;
         }
@@ -272,7 +344,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         SaveAcc();
 
-        chargeBar.ChargeSkill(10f);
+        chargeBar.DecreaseSkill(10f);
 
         if (rigid.position.y < yPos)
         {
@@ -326,6 +398,35 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    IEnumerator MoveRight()
+    {
+
+        Vector2 playerPos = transform.position;
+        if (playerPos.x < 6)
+        {
+            onMoving = true;
+            playerPos.x += 2.0f;
+            transform.position = playerPos;
+            yield return new WaitForSeconds(0.12f);
+            onMoving = false;
+        }
+
+    }
+
+    IEnumerator MoveLeft()
+    {
+        Vector2 playerPos = transform.position;
+        if (playerPos.x > -6)
+        {
+            onMoving = true;
+            playerPos.x -= 2.0f;
+            transform.position = playerPos;
+            yield return new WaitForSeconds(0.12f);
+            onMoving = false;
+        }
+
+    }
+
     void OnDestroy()
     {
         ParticleSystem p = Instantiate(particle, transform.position, quaternion.identity);
@@ -333,6 +434,5 @@ public class PlayerController : Singleton<PlayerController>
         module.startColor = sprite1.color;
         Destroy(velocityText.gameObject);
     }
-
 
 }

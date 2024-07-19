@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class ChargeBar : MonoBehaviour
 {
@@ -18,10 +19,16 @@ public class ChargeBar : MonoBehaviour
 
     public GameObject goSpace;
 
+    //추가
+    PlayerController player;
 
     void Start()
     {
-        currentGauge = maxGauge; // 현재 게이지를 최대값으로 초기화
+        //currentGauge = maxGauge; // 현재 게이지를 최대값으로 초기화
+        //게이지 0으로 시작 
+        currentGauge = 0f;
+
+        player = FindObjectOfType<PlayerController>();
 
         // 슬라이더의 백그라운드 이미지를 투명하게 설정
         SetBackgroundTransparent(chargeBarSliderLeft);
@@ -40,9 +47,13 @@ public class ChargeBar : MonoBehaviour
 
     void Update()
     {
+        //추가
+        //게이지 자동 충전 속도 갱신 (플레이어 속도 단계에 따라)
+        ChargeSpeedIncrease();
+
         if (PlayerController.Instance != null && !PlayerController.Instance.isDash)
         {
-            autoChargeSkill();
+            AutoChargeSkill();
         }
 
         // 게이지가 맥스에 도달하고 반짝이는 중이지 않다면 반짝이기 시작
@@ -66,17 +77,6 @@ public class ChargeBar : MonoBehaviour
             Color transparentColor = backgroundImage.color;
             transparentColor.a = 0f; // 알파 값을 0으로 설정하여 완전히 투명하게 만듦
             backgroundImage.color = transparentColor;
-        }
-    }
-
-    // 발판을 부술 때 호출되는 함수
-    public void IncreaseGauge()
-    {
-        if (currentGauge < maxGauge)
-        {
-            currentGauge++;
-            chargeBarSliderLeft.value = currentGauge;
-            chargeBarSliderRight.value = currentGauge;
         }
     }
 
@@ -125,7 +125,23 @@ public class ChargeBar : MonoBehaviour
         chargeBarSliderRight.value = currentGauge;
     }
 
-    public void autoChargeSkill()
+    //스킬 게이지 감소 함수
+    public void DecreaseSkill(float amount)
+    {
+        if (currentGauge != maxGauge)
+        {
+            currentGauge -= amount;
+        }
+
+        if (currentGauge < 0)
+        {
+            currentGauge = 0f;
+        }
+        chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
+        chargeBarSliderRight.value = currentGauge;
+    }
+
+    public void AutoChargeSkill()
     {
         currentGauge += autoChargeSpeed * Time.deltaTime;
         if (currentGauge > maxGauge)
@@ -134,6 +150,26 @@ public class ChargeBar : MonoBehaviour
         }
         chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
         chargeBarSliderRight.value = currentGauge;
+    }
+
+    private void ChargeSpeedIncrease()
+    {
+        switch (player.ACCStep + 1)
+        {
+            case 1:
+                autoChargeSpeed = 3f;
+                break;
+            case 2:
+                autoChargeSpeed = 7f;
+                break;
+            case 3:
+                autoChargeSpeed = 11f;
+                break;
+            case 4:
+                autoChargeSpeed = 15f;
+                break;
+
+        }
     }
 
     // 차지 색상 효과 시작
@@ -158,7 +194,7 @@ public class ChargeBar : MonoBehaviour
 
         // 원래 색상으로 복원
         Color targetColor;
-        ColorUtility.TryParseHtmlString("#BF94E4", out targetColor);
+        UnityEngine.ColorUtility.TryParseHtmlString("#BF94E4", out targetColor);
         chargeBarImageLeft.color = targetColor;
         chargeBarImageRight.color = targetColor;
         isFlashing = false; // 반짝이는 중이 아님을 표시

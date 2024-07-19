@@ -19,13 +19,6 @@ public class PlatformRandHp : MonoBehaviour
     public PopUpScore scoreTextPfb;
     private PopUpScore scoreText;
 
-    /*
-    [SerializeField]
-    TextMeshProUGUI hpTextPfb;
-    TextMeshProUGUI hpText;
-    Canvas fixedCanvas;
-    */
-
     TextMeshProUGUI hpText;
 
     //색들
@@ -54,9 +47,7 @@ public class PlatformRandHp : MonoBehaviour
     private void Awake()
     {
         hpText = GetComponentInChildren<TextMeshProUGUI>();
-        /*
-        fixedCanvas = GameObject.Find("FixedCanvas").GetComponent<Canvas>();
-        */
+
     }
 
     //바닥 생성되는 순간 호출 > 이후 Start()호출
@@ -66,16 +57,6 @@ public class PlatformRandHp : MonoBehaviour
         //OnEnable에서 정해진 체력에 따라 색상 변경 및 물리 머티리얼 할당
         HpToColor();
     }
-
-    /*
-    void OnDisable()
-    {
-        if (hpText != null)
-        {
-            Destroy(hpText.gameObject);
-        }
-    }
-    */
 
     private void Start()
     {
@@ -103,12 +84,10 @@ public class PlatformRandHp : MonoBehaviour
                 scoreText.SettingText(CalculateScore());
 
                 gameObject.SetActive(false);
-                //Destroy(hpText.gameObject);
+
             }
             else
             {
-                // 임시로 죽으면 게임 멈춤
-                Debug.Log("YOU DIED");
                 GameManager.Instance.FailGame();
 
             }
