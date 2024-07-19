@@ -94,7 +94,7 @@ public class ChargeBar : MonoBehaviour
     {
         goSpace.SetActive(false);
 
-        float duration = 1.0f; // 애니메이션 지속 시간
+        float duration = 2.0f; // 애니메이션 지속 시간
         float startValue = maxGauge; // 슬라이더의 초기 값
         float endValue = 0; // 슬라이더의 최종 값
         float elapsedTime = 0; // 경과 시간
