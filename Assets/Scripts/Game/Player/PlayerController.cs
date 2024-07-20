@@ -36,18 +36,11 @@ public class PlayerController : Singleton<PlayerController>
 
     //추가
     bool onMoving;
-    [SerializeField] AnimationCurve dashWidthCurve;
-    [SerializeField] AnimationCurve normalWidthCurve;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         trail = GetComponentInChildren<TrailRenderer>();
-
-        //추가
-        trail.widthCurve = normalWidthCurve;
-        trail.time = 0.2f;
-
         wallmove = GetComponent<WallMove>();
 
         colorRange = maxFallingSpeed / colorStep;
@@ -121,36 +114,58 @@ public class PlayerController : Singleton<PlayerController>
     {
         //추가
         //위치 보정 코드들 
-        float[] fixedXPositions = { -6.0f, -4.0f, -2.0f, 0.0f, 2.0f, 4.0f, 6.0f };
-
-        // 현재 x 위치
-        float currentX = transform.position.x;
-
-        // 고정된 좌표 중 가장 가까운 값을 찾기위해 초기값 설정
-        float closestX = fixedXPositions[0];
-        float closestDistance = Mathf.Abs(currentX - closestX);
-
-        //고정 좌표 배열을 순회하며 가장 가까운 좌표 찾기
-        foreach (float x in fixedXPositions)
+        if (transform.position.x < -5 && transform.position.x > -7)
         {
-            float distance = Mathf.Abs(currentX - x);
-            if (distance < closestDistance)
-            {
-                //가장 가까운 거리라면 변수 업데이트
-                closestDistance = distance;
-                closestX = x;
-            }
+            Vector2 playerPos = transform.position;
+            playerPos.x = -6.0f;
+            transform.position = playerPos;
         }
 
-        // 위치 보정
-        Vector2 playerPos = transform.position;
-        playerPos.x = closestX;
-        transform.position = playerPos;
+        if (transform.position.x < -3 && transform.position.x > -5)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = -4.0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < -1 && transform.position.x > -3)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = -2.0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < 1 && transform.position.x > -1)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < 3 && transform.position.x > 1)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 2.0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < 5 && transform.position.x > 3)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 4.0f;
+            transform.position = playerPos;
+        }
+
+        if (transform.position.x < 7 && transform.position.x > 5)
+        {
+            Vector2 playerPos = transform.position;
+            playerPos.x = 6.0f;
+            transform.position = playerPos;
+        }
 
 
         rigid.velocity = new Vector2(rigid.velocity.x, rigid.velocity.y);
-        //대쉬 상태가 아니면 정해진 최대 속도로 고정
-        if (rigid.velocity.y < -maxFallingSpeed && !isDash)
+        if (rigid.velocity.y < -maxFallingSpeed)
         {
             rigid.velocity = new Vector2(rigid.velocity.x, -maxFallingSpeed);
         }
@@ -158,13 +173,12 @@ public class PlayerController : Singleton<PlayerController>
 
     void LateUpdate()
     {
-
+        Debug.Log(rigid.velocity.y);
         velocityText.transform.position = new Vector3(transform.position.x, velocityText.transform.position.y, velocityText.transform.position.z);
     }
 
-    void changeColor() //이후 Update()에서 호출
+    void changeColor()
     {
-        //ACCStep은 플레이어의 속도단계를 표현한 변수로 0, 1, 2, 3의 값을 가짐
         ACCStep = (int)(Mathf.Abs(rigid.velocity.y) / colorRange);
         if (ACCStep == colorStep)
         {
@@ -173,42 +187,39 @@ public class PlayerController : Singleton<PlayerController>
 
         velocityText.SetText((ACCStep + 1).ToString());
 
-        //아래 코루틴에서 targetColor를 참조하기 위해 기본값으로 초기화
-        Color targetColor = Color.white;
+        Color targetColor;
         switch (ACCStep)
         {
             case 0:
                 ColorUtility.TryParseHtmlString("#e0ffff", out targetColor);
 
-                //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 1:
                 ColorUtility.TryParseHtmlString("#48d1cc", out targetColor);
 
-                //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
 
             case 2:
                 ColorUtility.TryParseHtmlString("#4169e1", out targetColor);
 
-                //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
 
             case 3:
                 ColorUtility.TryParseHtmlString("#000080", out targetColor);
 
-                //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
+                StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
         }
-        StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-        StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
     }
 
     IEnumerator LerpColorChnage(Color nowColor, Color targetColor)
@@ -259,10 +270,6 @@ public class PlayerController : Singleton<PlayerController>
                 // 잠깐 정지
                 rigid.velocity = Vector2.zero;
 
-                //추가
-                trail.widthCurve = dashWidthCurve;
-                trail.time = 0.8f;
-
                 if (dashCoroutine != null)
                 {
                     StopCoroutine(dashCoroutine);
@@ -303,11 +310,6 @@ public class PlayerController : Singleton<PlayerController>
         if (isDash)
         {
             isDash = false;
-
-            //추가
-            trail.widthCurve = normalWidthCurve;
-            trail.time = 0.2f;
-
             StopCoroutine(dashCoroutine);
         }
     }

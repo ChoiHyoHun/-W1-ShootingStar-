@@ -160,13 +160,13 @@ public class ChargeBar : MonoBehaviour
                 autoChargeSpeed = 3f;
                 break;
             case 2:
-                autoChargeSpeed = 5f;
+                autoChargeSpeed = 7f;
                 break;
             case 3:
-                autoChargeSpeed = 10f;
+                autoChargeSpeed = 11f;
                 break;
             case 4:
-                autoChargeSpeed = 20f;
+                autoChargeSpeed = 15f;
                 break;
 
         }
