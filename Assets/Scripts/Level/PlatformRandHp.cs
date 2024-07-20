@@ -138,10 +138,18 @@ public class PlatformRandHp : MonoBehaviour
         }
     }
 
+    //피버 대쉬 중이 아닐 때 플랫폼을 밟으면 점수를 까도록 수정
     public int CalculateScore()
     {
         int basicPoint = 100;
-        return basicPoint * (1 + 2 * hp);
+        if (PlayerController.Instance.isDash)
+        {
+            return basicPoint * (1 + 2 * hp);
+        }
+        else
+        {
+            return -basicPoint * (1 + 2 * hp);
+        }
 
     }
 

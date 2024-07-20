@@ -174,25 +174,25 @@ public class PlayerController : Singleton<PlayerController>
         velocityText.SetText((ACCStep + 1).ToString());
 
         //아래 코루틴에서 targetColor를 참조하기 위해 기본값으로 초기화
-        Color targetColor = Color.white;
+        Color targetColor = sprite1.color;
         switch (ACCStep)
         {
+            /*****
+            기존 컬러코드
+            0: #e0ffff
+            1: #48d1cc
+            2: #4169e1
+            3: #000080
+
+            *****/
             case 0:
-                ColorUtility.TryParseHtmlString("#e0ffff", out targetColor);
+                ColorUtility.TryParseHtmlString("#000080", out targetColor);
 
                 //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
                 //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
                 break;
 
             case 1:
-                ColorUtility.TryParseHtmlString("#48d1cc", out targetColor);
-
-                //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
-                //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
-                break;
-
-
-            case 2:
                 ColorUtility.TryParseHtmlString("#4169e1", out targetColor);
 
                 //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
@@ -200,8 +200,16 @@ public class PlayerController : Singleton<PlayerController>
                 break;
 
 
+            case 2:
+                ColorUtility.TryParseHtmlString("#48d1cc", out targetColor);
+
+                //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
+                //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));
+                break;
+
+
             case 3:
-                ColorUtility.TryParseHtmlString("#000080", out targetColor);
+                ColorUtility.TryParseHtmlString("#e0ffff", out targetColor);
 
                 //StartCoroutine(LerpColorChnage(sprite1.color, targetColor));
                 //StartCoroutine(LerpTrailChnage(trail.startColor, targetColor));

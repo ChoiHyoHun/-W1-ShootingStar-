@@ -19,9 +19,19 @@ public class PopUpScore : MonoBehaviour
         StartCoroutine(textShowing(popUpText));
     }
 
+    //점수가 양수면 + 붙이기
     public void SettingText(int score)
     {
-        popUpText.SetText("+" + score.ToString());
+        if (score > 0)
+        {
+            popUpText.SetText("+" + score.ToString());
+        }
+        else
+        {
+            //점수가 까질때는 텍스트 빨갛게 
+            popUpText.color = Color.red;
+            popUpText.SetText(score.ToString());
+        }
     }
 
     IEnumerator textShowing(TextMeshProUGUI text)

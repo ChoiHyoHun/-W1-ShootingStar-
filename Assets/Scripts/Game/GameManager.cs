@@ -24,6 +24,11 @@ public class GameManager : Singleton<GameManager>
     public void AddScore(int points)
     {
         score += points;
+        //스코어를 갱신하기 전에, 스코어가 음수까지 떨어지면 0으로 고정
+        if (score < 0)
+        {
+            score = 0;
+        }
         UpdateScoreUI();
 
         // 최고 기록 갱신
