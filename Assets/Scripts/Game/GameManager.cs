@@ -11,13 +11,18 @@ public class GameManager : Singleton<GameManager>
     private int score;             // 현재 점수
     private int bestScore;         // 최고 기록
 
-
+    //추가
+    public Image whiteScreenImage;
+    public float fadeDuration = 0.8f;
 
     void Start()
     {
         LoadBestScore();           // 최고 기록 불러오기
         UpdateScoreUI();           // UI에 점수 표시 업데이트
         UpdateBestScoreUI();       // UI에 최고 기록 표시 업데이트
+
+        //추가
+        SetImageAlpha(0f);
     }
 
     // 점수를 추가하고 UI 업데이트
@@ -89,7 +94,44 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); // 현재 씬 다시 로드
     }
 
+    public IEnumerator WhiteScreenEffect()
+    {
+        // 화면이 하얗게 변함
+        yield return StartCoroutine(FadeImage(true));
 
+        // 잠깐 멈춤
+        yield return new WaitForSeconds(0.1f);
+
+        // 화면이 서서히 원래대로 돌아옴
+        yield return StartCoroutine(FadeImage(false));
+    }
+
+    IEnumerator FadeImage(bool fadeToWhite)
+    {
+        float alpha = fadeToWhite ? 1f : 0f;
+        float startAlpha = whiteScreenImage.color.a;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            float t = elapsedTime / fadeDuration;
+
+            float newAlpha = Mathf.Lerp(startAlpha, alpha, t * (2f - t));
+            SetImageAlpha(newAlpha);
+            yield return null;
+        }
+
+        SetImageAlpha(alpha);
+    }
+
+    void SetImageAlpha(float alpha)
+    {
+        Color color = whiteScreenImage.color;
+        color.a = alpha;
+        whiteScreenImage.color = color;
+    }
 
 
 

@@ -10,7 +10,7 @@ public class PlayerController : Singleton<PlayerController>
     TrailRenderer trail;
     [SerializeField] SpriteRenderer sprite1;
     [SerializeField] SpriteRenderer sprite2;
-    ChargeBar chargeBar;
+    public ChargeBar chargeBar;
 
     [SerializeField] TextMeshProUGUI velocityTextPfb;
     TextMeshProUGUI velocityText;
@@ -293,7 +293,7 @@ public class PlayerController : Singleton<PlayerController>
 
     IEnumerator dashing()
     {
-        float duration = 2f;
+        float duration = 3f;
         float currentTime = 0;
 
         Coroutine blinkCoroutine = null;
@@ -310,6 +310,12 @@ public class PlayerController : Singleton<PlayerController>
             if (Mathf.Abs(rigid.velocity.y) < dashSpeed)
                 rigid.velocity = new Vector2(rigid.velocity.x, -dashSpeed);
 
+            if (currentTime > 2.2f)
+            {
+                StartCoroutine(GameManager.Instance.WhiteScreenEffect());
+            }
+
+
             if (currentTime >= duration - 1f && blinkCoroutine == null)
             {
                 blinkCoroutine = StartCoroutine(BlinkEffect());
@@ -321,7 +327,6 @@ public class PlayerController : Singleton<PlayerController>
         if (isDash)
         {
             //대쉬 종료후 폭발 메서드 발동
-            Debug.Log("폭발 메서드 발동");
             ExplosionAfterDash();
 
             isDash = false;
@@ -357,7 +362,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         float blinkInterval = 0.08f;
         float elapsed = 0f;
-        float startBlinkInterval = 0.15f;
+        float startBlinkInterval = 0.08f;
         float endBlinkInterval = 0.01f; // 깜박임이 빨라질 최종 간격
 
         while (elapsed < blinkDuration)
@@ -395,7 +400,7 @@ public class PlayerController : Singleton<PlayerController>
     void ExplosionAfterDash()
     {
         //폭발 범위 설정 및 폭발 범위 내부 플랫폼 배열로 반환
-        Vector2 explosionRange = new Vector2(25f, 40f);
+        Vector2 explosionRange = new Vector2(25f, 50f);
         Collider2D[] platforms = Physics2D.OverlapBoxAll(transform.position, explosionRange, 0f, whatIsPlatform);
         for (int i = 0; i < platforms.Length; i++)
         {
@@ -432,7 +437,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         SaveAcc();
 
-        chargeBar.DecreaseSkill(10f);
+        chargeBar.DecreaseSkill(25f);
 
         if (rigid.position.y < yPos)
         {

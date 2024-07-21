@@ -157,16 +157,16 @@ public class ChargeBar : MonoBehaviour
         switch (player.ACCStep + 1)
         {
             case 1:
-                autoChargeSpeed = 3f;
+                autoChargeSpeed = 1f;
                 break;
             case 2:
-                autoChargeSpeed = 5f;
+                autoChargeSpeed = 2f;
                 break;
             case 3:
-                autoChargeSpeed = 10f;
+                autoChargeSpeed = 5f;
                 break;
             case 4:
-                autoChargeSpeed = 20f;
+                autoChargeSpeed = 10f;
                 break;
 
         }

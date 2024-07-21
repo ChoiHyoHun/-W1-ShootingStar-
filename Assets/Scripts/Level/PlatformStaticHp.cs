@@ -12,7 +12,73 @@ public class PlatformStaticHp : MonoBehaviour
     public PopUpScore scoreTextPfb;
     private PopUpScore scoreText;
 
+    //추가
+    [SerializeField]
+    private float rayDistance = 5f;
+    private bool wasHitLastFrame = false;
+    float distanceLastFrame;
 
+    private bool isAvoided = false;
+    Vector3 raySpawnOffset = new Vector2(0f, 0.5f);
+
+    void FixedUpdate()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(transform.position + raySpawnOffset, Vector2.up, rayDistance, LayerMask.GetMask("PlayerWithPlatform"));
+
+
+        if (hit.rigidbody != null)
+        {
+            if (!wasHitLastFrame)
+            {
+                //계속 갱신되고 있으니까 => 내 위에 Player 계속 있다.
+                wasHitLastFrame = true;
+                distanceLastFrame = hit.distance;
+            }
+
+        }
+        else //ray에 걸리는거 사라짐. 
+        {
+            if (wasHitLastFrame && !isAvoided) //근데 아까까지 위에 Player가 있었음
+            {
+                int avoidScore = CalculateAvoidScore(distanceLastFrame);
+
+                isAvoided = true; //있다가 갔으니까 피한거지.
+
+                PlayerController.Instance.chargeBar.ChargeSkill(2f);
+                GameManager.Instance.AddScore(avoidScore);
+                //점수 텍스트 팝업
+                scoreText = Instantiate(scoreTextPfb, PlayerController.Instance.transform.position, Quaternion.identity);
+                scoreText.SettingText(CalculateAvoidScore(distanceLastFrame));
+            }
+
+        }
+
+    }
+
+    private int CalculateAvoidScore(float distance)
+    {
+        // 거리에 따라 점수를 설정합니다.
+        if (distance <= 1f && distance > 0f)
+        {
+            return 700;
+        }
+        else if (distance <= 2f && distance > 1f)
+        {
+            return 500;
+        }
+        else if (distance <= 3f && distance > 2f)
+        {
+            return 300;
+        }
+        else if (distance <= 5f && distance > 3f)
+        {
+            return 100;
+        }
+        else
+        {
+            return 0; // 지정된 거리 범위 외에는 점수를 부여하지 않습니다.
+        }
+    }
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
@@ -39,7 +105,7 @@ public class PlatformStaticHp : MonoBehaviour
     //플랫폼 파괴 메서드
     public void Break()
     {
-        //점수 올리기
+        //점수 계산
         GameManager.Instance.AddScore(CalculateScore());
 
         //점수 텍스트 팝업
@@ -56,7 +122,7 @@ public class PlatformStaticHp : MonoBehaviour
         int basicPoint = 100;
         if (PlayerController.Instance.isDash)
         {
-            return basicPoint * (1 + 2 * hp);
+            return basicPoint * (1 + 2 * hp) / 5;
         }
         else
         {
