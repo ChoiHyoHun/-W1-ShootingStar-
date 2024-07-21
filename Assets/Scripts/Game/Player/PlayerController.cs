@@ -404,6 +404,7 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    //추가
     IEnumerator MoveRight()
     {
 
