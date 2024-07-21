@@ -18,17 +18,15 @@ public class PlatformStaticHp : MonoBehaviour
     {
         if (collisionInfo.collider.tag == "Player")
         {
+            //파괴 가능한가?
             if (CanBreak())
             {
+                //대쉬 상태가 아닌가?
                 if (!PlayerController.Instance.isDash)
+                    //바운스 호출
                     PlayerController.Instance.Bounce(transform.position.y);
-                GameManager.Instance.AddScore(CalculateScore());
 
-                scoreText = Instantiate(scoreTextPfb, transform.position, Quaternion.identity);
-                scoreText.SettingText(CalculateScore());
-
-
-                gameObject.SetActive(false);
+                Break();
             }
             else
             {
@@ -36,6 +34,20 @@ public class PlatformStaticHp : MonoBehaviour
             }
 
         }
+    }
+
+    //플랫폼 파괴 메서드
+    public void Break()
+    {
+        //점수 올리기
+        GameManager.Instance.AddScore(CalculateScore());
+
+        //점수 텍스트 팝업
+        scoreText = Instantiate(scoreTextPfb, transform.position, Quaternion.identity);
+        scoreText.SettingText(CalculateScore());
+
+        //플랫폼 끄기
+        gameObject.SetActive(false);
     }
 
     //피버 대쉬 중이 아닐 때 플랫폼을 밟으면 점수를 까도록 수정

@@ -38,6 +38,8 @@ public class PlayerController : Singleton<PlayerController>
     bool onMoving;
     [SerializeField] AnimationCurve dashWidthCurve;
     [SerializeField] AnimationCurve normalWidthCurve;
+    [SerializeField] LayerMask whatIsPlatform;
+    [SerializeField] float blinkDuration;
 
     void Awake()
     {
@@ -293,6 +295,9 @@ public class PlayerController : Singleton<PlayerController>
     {
         float duration = 2f;
         float currentTime = 0;
+
+        Coroutine blinkCoroutine = null;
+
         while (currentTime < duration)
         {
             currentTime += Time.deltaTime;
@@ -305,11 +310,20 @@ public class PlayerController : Singleton<PlayerController>
             if (Mathf.Abs(rigid.velocity.y) < dashSpeed)
                 rigid.velocity = new Vector2(rigid.velocity.x, -dashSpeed);
 
+            if (currentTime >= duration - 1f && blinkCoroutine == null)
+            {
+                blinkCoroutine = StartCoroutine(BlinkEffect());
+            }
+
             yield return null;
         }
 
         if (isDash)
         {
+            //대쉬 종료후 폭발 메서드 발동
+            Debug.Log("폭발 메서드 발동");
+            ExplosionAfterDash();
+
             isDash = false;
 
             //추가
@@ -335,6 +349,74 @@ public class PlayerController : Singleton<PlayerController>
             trail.startColor = newColor;
 
             yield return null;  // 다음 프레임까지 대기
+        }
+    }
+
+    //플레이어 깜박임 효과
+    IEnumerator BlinkEffect()
+    {
+        float blinkInterval = 0.08f;
+        float elapsed = 0f;
+        float startBlinkInterval = 0.15f;
+        float endBlinkInterval = 0.01f; // 깜박임이 빨라질 최종 간격
+
+        while (elapsed < blinkDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = elapsed / blinkDuration;
+            blinkInterval = Mathf.Lerp(startBlinkInterval, endBlinkInterval, t);
+
+            SetSpriteVisibility((elapsed % (blinkInterval * 2)) < blinkInterval);
+            yield return null;
+
+        }
+
+        SetSpriteVisibility(true);
+
+    }
+
+    void SetSpriteVisibility(bool isVisible)
+    {
+        float alpha = isVisible ? 1f : 0f;
+        Color color1 = sprite1.color;
+        color1.a = alpha;
+        sprite1.color = color1;
+
+        Color color2 = sprite2.color;
+        color2.a = alpha;
+        sprite2.color = color2;
+
+        Color trailColor = trail.startColor;
+        trailColor.a = alpha;
+        trail.startColor = trailColor;
+    }
+
+    void ExplosionAfterDash()
+    {
+        //폭발 범위 설정 및 폭발 범위 내부 플랫폼 배열로 반환
+        Vector2 explosionRange = new Vector2(25f, 40f);
+        Collider2D[] platforms = Physics2D.OverlapBoxAll(transform.position, explosionRange, 0f, whatIsPlatform);
+        for (int i = 0; i < platforms.Length; i++)
+        {
+            PlatformStaticHp staticPlatformScript = platforms[i].GetComponent<PlatformStaticHp>();
+            PlatformRandHp randomPlatformScript = platforms[i].GetComponent<PlatformRandHp>();
+
+            if (staticPlatformScript != null && randomPlatformScript == null)
+            {
+                staticPlatformScript.Break();
+            }
+            else if (randomPlatformScript != null && staticPlatformScript == null)
+            {
+                randomPlatformScript.Break();
+            }
+            else
+            {
+                Debug.Log("Not Platform");
+            }
+
+
+
         }
     }
 

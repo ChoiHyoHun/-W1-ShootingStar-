@@ -78,13 +78,7 @@ public class PlatformRandHp : MonoBehaviour
                 {
                     PlayerController.Instance.Bounce(transform.position.y);
                 }
-                GameManager.Instance.AddScore(CalculateScore());
-
-                scoreText = Instantiate(scoreTextPfb, transform.position, Quaternion.identity);
-                scoreText.SettingText(CalculateScore());
-
-                gameObject.SetActive(false);
-
+                Break();
             }
             else
             {
@@ -93,6 +87,20 @@ public class PlatformRandHp : MonoBehaviour
             }
 
         }
+    }
+
+    //플랫폼 파괴 메서드
+    public void Break()
+    {
+        //점수 올리기
+        GameManager.Instance.AddScore(CalculateScore());
+
+        //점수 텍스트 팝업
+        scoreText = Instantiate(scoreTextPfb, transform.position, Quaternion.identity);
+        scoreText.SettingText(CalculateScore());
+
+        //플랫폼 끄기
+        gameObject.SetActive(false);
     }
 
     private void RandomSpawn()

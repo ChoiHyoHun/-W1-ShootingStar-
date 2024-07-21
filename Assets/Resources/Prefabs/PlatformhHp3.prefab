@@ -248,7 +248,7 @@ GameObject:
   - component: {fileID: 6887204484278840159}
   - component: {fileID: 6236463242199065877}
   - component: {fileID: 4154483974734902342}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: PlatformhHp3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
