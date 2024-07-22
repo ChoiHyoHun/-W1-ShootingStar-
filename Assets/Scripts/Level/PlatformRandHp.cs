@@ -40,6 +40,13 @@ public class PlatformRandHp : MonoBehaviour
     private bool isAvoided = false;
     Vector3 raySpawnOffset = new Vector2(0f, 0.5f);
 
+    AudioSource platformAudio;
+
+    private void Start()
+    {
+        platformAudio = GetComponent<AudioSource>();
+    }
+
     void FixedUpdate()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position + raySpawnOffset, Vector2.up, rayDistance, LayerMask.GetMask("PlayerWithPlatform"));
@@ -63,6 +70,10 @@ public class PlatformRandHp : MonoBehaviour
 
                 isAvoided = true; //있다가 갔으니까 피한거지.
 
+                //소리 재생
+                if (!PlayerController.Instance.isDash)
+                    PlayScoreClip();
+
                 PlayerController.Instance.chargeBar.ChargeSkill(2f);
                 GameManager.Instance.AddScore(avoidScore);
                 //점수 텍스트 팝업
@@ -77,19 +88,19 @@ public class PlatformRandHp : MonoBehaviour
     private int CalculateAvoidScore(float distance)
     {
         // 거리에 따라 점수를 설정합니다.
-        if (distance <= 1f && distance > 0f)
+        if (distance <= 2f && distance > 0f)
         {
             return 700;
         }
-        else if (distance <= 2f && distance > 1f)
+        else if (distance <= 3f && distance > 2f)
         {
             return 500;
         }
-        else if (distance <= 3f && distance > 2f)
+        else if (distance <= 4f && distance > 3f)
         {
             return 300;
         }
-        else if (distance <= 5f && distance > 3f)
+        else if (distance <= 5f && distance > 4f)
         {
             return 100;
         }
@@ -127,11 +138,6 @@ public class PlatformRandHp : MonoBehaviour
         HpToColor();
     }
 
-    private void Start()
-    {
-
-    }
-
     private void SetHpText()
     {
         hpText.text = (hp + 1).ToString();
@@ -147,6 +153,7 @@ public class PlatformRandHp : MonoBehaviour
                 {
                     PlayerController.Instance.Bounce(transform.position.y);
                 }
+
                 Break();
             }
             else
@@ -242,6 +249,12 @@ public class PlatformRandHp : MonoBehaviour
             return false;
         }
 
+    }
+
+    public void PlayScoreClip()
+    {
+        platformAudio.volume = 0.12f;
+        platformAudio.Play();
     }
 
 }

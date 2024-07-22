@@ -48,7 +48,9 @@ public class PlayerController : Singleton<PlayerController>
     //0: Beep 
     //1: Explosion
     //2: DashStart
-    public AudioClip[] clips = new AudioClip[3];
+    //3: Hit
+    //4: GetPoint
+    public AudioClip[] clips = new AudioClip[5];
 
     float beepDelay = 0.7f;
     float beepDelayRate = 0.7f;
@@ -82,6 +84,7 @@ public class PlayerController : Singleton<PlayerController>
     // Update is called once per frame
     void Update()
     {
+        PointToMaxSpeed();
         dash();
 
         if (!isDash)
@@ -111,25 +114,6 @@ public class PlayerController : Singleton<PlayerController>
             StartCoroutine(MoveLeft());
         }
 
-
-        /*
-                if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                {
-                    Debug.Log("Left");
-                    Vector2 playerPos = transform.position;
-                    playerPos.x -= 2.0f;
-                    transform.position = playerPos;
-
-                }
-
-                if (Input.GetKeyUp(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                {
-                    Debug.Log("Right");
-                    Vector2 playerPos = transform.position;
-                    playerPos.x += 2.0f;
-                    transform.position = playerPos;
-                }
-        */
     }
 
     void FixedUpdate()
@@ -356,6 +340,15 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    //이 간단한걸
+    void OnCollisionEnter2D(Collision2D collisionInfo)
+    {
+        if (isDash)
+        {
+            playPointClip();
+        }
+    }
+
     IEnumerator dashEffect()
     {
         float timer = 0f;
@@ -471,6 +464,7 @@ public class PlayerController : Singleton<PlayerController>
     public void Bounce(float yPos)
     {
         SaveAcc();
+        playHitClip();
 
         chargeBar.DecreaseSkill(20f);
 
@@ -564,22 +558,55 @@ public class PlayerController : Singleton<PlayerController>
         Destroy(velocityText.gameObject);
     }
 
+    //점수에 따른 최대 속도 증가 메서드
+    void PointToMaxSpeed()
+    {
+        int[] scoreThresholds = { 20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000, 180000, 220000, 260000, 300000, 350000 };
+        float[] speeds = { 22f, 22.5f, 23f, 23.5f, 24f, 24.5f, 25f, 25.5f, 26f, 27f, 28f, 29f, 30f };
+
+        for (int i = 0; i < scoreThresholds.Length - 1; i++)
+        {
+            if (GameManager.Instance.score >= scoreThresholds[i] && GameManager.Instance.score < scoreThresholds[i + 1])
+            {
+                maxFallingSpeed = speeds[i];
+                return;
+            }
+        }
+
+        if (GameManager.Instance.score >= scoreThresholds[scoreThresholds.Length - 1])
+        {
+            maxFallingSpeed = speeds[speeds.Length - 1];
+        }
+    }
+
+    //사운드 재생 메서드
     public void playBeepClip()
     {
-        playerAudio.volume = 0.2f;
+        playerAudio.volume = 0.04f;
         playerAudio.PlayOneShot(clips[0]);
     }
 
     public void playExplosionClip()
     {
-        playerAudio.volume = 1f;
+        playerAudio.volume = 0.2f;
         playerAudio.PlayOneShot(clips[1]);
     }
 
     public void playDashClip()
     {
-        playerAudio.volume = 0.6f;
+        playerAudio.volume = 0.12f;
         playerAudio.PlayOneShot(clips[2]);
+    }
+    public void playHitClip()
+    {
+        playerAudio.volume = 0.14f;
+        playerAudio.PlayOneShot(clips[3]);
+    }
+
+    public void playPointClip()
+    {
+        playerAudio.volume = 0.1f;
+        playerAudio.PlayOneShot(clips[4]);
     }
 
 }

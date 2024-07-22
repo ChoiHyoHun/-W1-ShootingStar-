@@ -21,6 +21,13 @@ public class PlatformStaticHp : MonoBehaviour
     private bool isAvoided = false;
     Vector3 raySpawnOffset = new Vector2(0f, 0.5f);
 
+    AudioSource platformAudio;
+
+    private void Start()
+    {
+        platformAudio = GetComponent<AudioSource>();
+    }
+
     void FixedUpdate()
     {
         RaycastHit2D hit = Physics2D.Raycast(transform.position + raySpawnOffset, Vector2.up, rayDistance, LayerMask.GetMask("PlayerWithPlatform"));
@@ -46,6 +53,12 @@ public class PlatformStaticHp : MonoBehaviour
 
                 PlayerController.Instance.chargeBar.ChargeSkill(3f);
                 GameManager.Instance.AddScore(avoidScore);
+
+                //소리 재생
+                if (!PlayerController.Instance.isDash)
+                    PlayScoreClip();
+
+
                 //점수 텍스트 팝업
                 scoreText = Instantiate(scoreTextPfb, PlayerController.Instance.transform.position, Quaternion.identity);
                 scoreText.SettingText(CalculateAvoidScore(distanceLastFrame));
@@ -58,19 +71,19 @@ public class PlatformStaticHp : MonoBehaviour
     private int CalculateAvoidScore(float distance)
     {
         // 거리에 따라 점수를 설정합니다.
-        if (distance <= 1f && distance > 0f)
+        if (distance <= 2f && distance > 0f)
         {
-            return 500;
-        }
-        else if (distance <= 2f && distance > 1f)
-        {
-            return 400;
+            return 700;
         }
         else if (distance <= 3f && distance > 2f)
         {
+            return 500;
+        }
+        else if (distance <= 4f && distance > 3f)
+        {
             return 300;
         }
-        else if (distance <= 5f && distance > 3f)
+        else if (distance <= 5f && distance > 4f)
         {
             return 100;
         }
@@ -79,6 +92,7 @@ public class PlatformStaticHp : MonoBehaviour
             return 0; // 지정된 거리 범위 외에는 점수를 부여하지 않습니다.
         }
     }
+
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
@@ -90,10 +104,13 @@ public class PlatformStaticHp : MonoBehaviour
                 Break();
                 //대쉬 상태가 아닌가?
                 if (!PlayerController.Instance.isDash)
+                {
                     //바운스 호출
                     PlayerController.Instance.Bounce(transform.position.y);
 
-                //Break();
+                }
+
+                Break();
             }
             else
             {
@@ -123,6 +140,7 @@ public class PlatformStaticHp : MonoBehaviour
         int basicPoint = 100;
         if (PlayerController.Instance.isDash)
         {
+
             return basicPoint * (1 + 2 * hp) / 5;
         }
         else
@@ -144,6 +162,12 @@ public class PlatformStaticHp : MonoBehaviour
             return false;
         }
 
+    }
+
+    public void PlayScoreClip()
+    {
+        platformAudio.volume = 0.1f;
+        platformAudio.Play();
     }
 
 

@@ -8,15 +8,17 @@ public class GameManager : Singleton<GameManager>
 {
     public TextMeshProUGUI scoreText;         // UI에 표시할 점수를 보여줄 Text 컴포넌트
     public TextMeshProUGUI bestScoreText;     // UI에 표시할 최고 기록을 보여줄 Text 컴포넌트
-    private int score;             // 현재 점수
+    public int score;             // 현재 점수
     private int bestScore;         // 최고 기록
 
     //추가
     public Image whiteScreenImage;
     public float fadeDuration = 0.8f;
+    private AudioSource managerAudio;
 
     void Start()
     {
+        managerAudio = GetComponent<AudioSource>();
         LoadBestScore();           // 최고 기록 불러오기
         UpdateScoreUI();           // UI에 점수 표시 업데이트
         UpdateBestScoreUI();       // UI에 최고 기록 표시 업데이트
@@ -79,6 +81,7 @@ public class GameManager : Singleton<GameManager>
     // 게임이 실패했을 때 호출되는 메서드
     public void FailGame()
     {
+        managerAudio.PlayOneShot(managerAudio.clip);
         if (PlayerController.Instance != null)
         {
             // 플레이어 캐릭터 파괴
