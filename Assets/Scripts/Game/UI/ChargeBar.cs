@@ -22,9 +22,13 @@ public class ChargeBar : MonoBehaviour
     //추가
     PlayerController player;
     [SerializeField] TextMeshProUGUI feverNoticeText;
+    AudioSource chargeAudio;
+    [SerializeField] AudioClip chargeAudioClip;
+    bool isPlayed = false;
 
     void Start()
     {
+        chargeAudio = GetComponent<AudioSource>();
         //currentGauge = maxGauge; // 현재 게이지를 최대값으로 초기화
         //게이지 0으로 시작 
         currentGauge = 0f;
@@ -68,10 +72,18 @@ public class ChargeBar : MonoBehaviour
                 feverNoticeText.gameObject.SetActive(true);
                 StartCoroutine(ChargeTextEffectCoroutine());
             }
+            if (!isPlayed)
+            {
+                chargeAudio.PlayOneShot(chargeAudioClip);
+                isPlayed = true;
+
+            }
+
         }
         // 게이지가 0이 되면 반짝이는 효과 중지
         else if (currentGauge <= 0 && isFlashing)
         {
+            isPlayed = false;
             StopChargeEffect();
         }
     }

@@ -31,7 +31,7 @@ public class PlayerController : Singleton<PlayerController>
     Coroutine bounceCoroutine = null;
     float saveAcc;
     bool isBouncing = false;
-    WallMove wallmove;
+    //WallMove wallmove;
     Canvas canvas;
 
     //추가
@@ -41,16 +41,29 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] LayerMask whatIsPlatform;
     [SerializeField] float blinkDuration;
 
+    Vector3 overlapOffset = new Vector3(0f, -5f, 0f);
+
+    AudioSource playerAudio;
+
+    //0: Beep 
+    //1: Explosion
+    //2: DashStart
+    public AudioClip[] clips = new AudioClip[3];
+
+    float beepDelay = 0.7f;
+    float beepDelayRate = 0.7f;
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         trail = GetComponentInChildren<TrailRenderer>();
+        playerAudio = GetComponent<AudioSource>();
 
         //추가
         trail.widthCurve = normalWidthCurve;
         trail.time = 0.2f;
 
-        wallmove = GetComponent<WallMove>();
+        //wallmove = GetComponent<WallMove>();
 
         colorRange = maxFallingSpeed / colorStep;
         // slider = FindObjectOfType<Slider>();
@@ -296,6 +309,9 @@ public class PlayerController : Singleton<PlayerController>
 
         Coroutine blinkCoroutine = null;
 
+        StartCoroutine(playBeepSound());
+        playDashClip();
+
         while (currentTime < duration)
         {
             currentTime += Time.deltaTime;
@@ -317,6 +333,7 @@ public class PlayerController : Singleton<PlayerController>
             if (currentTime >= duration - 1f && blinkCoroutine == null)
             {
                 blinkCoroutine = StartCoroutine(BlinkEffect());
+
             }
 
             yield return null;
@@ -328,6 +345,8 @@ public class PlayerController : Singleton<PlayerController>
             ExplosionAfterDash();
 
             isDash = false;
+
+            StopCoroutine(playBeepSound());
 
             //추가
             trail.widthCurve = normalWidthCurve;
@@ -358,7 +377,7 @@ public class PlayerController : Singleton<PlayerController>
     //플레이어 깜박임 효과
     IEnumerator BlinkEffect()
     {
-        float blinkInterval = 0.08f;
+        float blinkInterval;
         float elapsed = 0f;
         float startBlinkInterval = 0.08f;
         float endBlinkInterval = 0.01f; // 깜박임이 빨라질 최종 간격
@@ -395,13 +414,31 @@ public class PlayerController : Singleton<PlayerController>
         trail.startColor = trailColor;
     }
 
+    IEnumerator playBeepSound()
+    {
+        if (isDash)
+        {
+            float delay = beepDelay;
+            while (delay > 0.01f)
+            {
+                playBeepClip();
+                yield return new WaitForSeconds(delay);
+                delay *= beepDelayRate;
+
+            }
+        }
+
+    }
+
     void ExplosionAfterDash()
     {
         //폭발 범위 설정 및 폭발 범위 내부 플랫폼 배열로 반환
         Vector2 explosionRange = new Vector2(25f, 50f);
-        Collider2D[] platforms = Physics2D.OverlapBoxAll(transform.position, explosionRange, 0f, whatIsPlatform);
+        Collider2D[] platforms = Physics2D.OverlapBoxAll(transform.position + overlapOffset, explosionRange, 0f, whatIsPlatform);
+        playExplosionClip();
         for (int i = 0; i < platforms.Length; i++)
         {
+            //플랫폼 코드를 분리하는 바람에 2개 다 받아와 메서드 호출 
             PlatformStaticHp staticPlatformScript = platforms[i].GetComponent<PlatformStaticHp>();
             PlatformRandHp randomPlatformScript = platforms[i].GetComponent<PlatformRandHp>();
 
@@ -525,6 +562,24 @@ public class PlayerController : Singleton<PlayerController>
         var module = p.main;
         module.startColor = sprite1.color;
         Destroy(velocityText.gameObject);
+    }
+
+    public void playBeepClip()
+    {
+        playerAudio.volume = 0.2f;
+        playerAudio.PlayOneShot(clips[0]);
+    }
+
+    public void playExplosionClip()
+    {
+        playerAudio.volume = 1f;
+        playerAudio.PlayOneShot(clips[1]);
+    }
+
+    public void playDashClip()
+    {
+        playerAudio.volume = 0.6f;
+        playerAudio.PlayOneShot(clips[2]);
     }
 
 }
