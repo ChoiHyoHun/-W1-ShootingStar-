@@ -255,8 +255,6 @@ public class PlayerController : Singleton<PlayerController>
 
     void dash()
     {
-        //대쉬 조건이 스페이스바 없이 게이지가 다 차면 발동으로 변경
-        //기존 조건 (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.DownArrow)) && chargeBar.currentGauge == chargeBar.maxGauge)
         {
 
@@ -437,7 +435,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         SaveAcc();
 
-        chargeBar.DecreaseSkill(25f);
+        chargeBar.DecreaseSkill(20f);
 
         if (rigid.position.y < yPos)
         {

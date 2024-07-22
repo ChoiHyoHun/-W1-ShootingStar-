@@ -4,14 +4,14 @@ using TMPro;
 
 public class MainMenuTextBlink : MonoBehaviour
 {
-    public TextMeshProUGUI mainMenuText; // 메인 메뉴의 TextMeshProUGUI 컴포넌트 참조
+    public TextMeshProUGUI blinkText; // 메인 메뉴의 TextMeshProUGUI 컴포넌트 참조
     public float blinkInterval = 0.5f; // 깜빡임 간격 (초 단위)
 
     private Coroutine blinkCoroutine; // 깜빡임 코루틴 참조 변수
 
-    void Start()
+    void OnEnable()
     {
-        if (mainMenuText != null)
+        if (blinkText != null)
         {
             blinkCoroutine = StartCoroutine(BlinkText());
         }
@@ -22,14 +22,14 @@ public class MainMenuTextBlink : MonoBehaviour
         while (true)
         {
             // 텍스트 숨기기
-            Color color = mainMenuText.color;
+            Color color = blinkText.color;
             color.a = 0;
-            mainMenuText.color = color;
+            blinkText.color = color;
             yield return new WaitForSeconds(blinkInterval);
 
             // 텍스트 보이기
             color.a = 1;
-            mainMenuText.color = color;
+            blinkText.color = color;
             yield return new WaitForSeconds(blinkInterval);
         }
     }

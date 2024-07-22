@@ -21,6 +21,7 @@ public class ChargeBar : MonoBehaviour
 
     //추가
     PlayerController player;
+    [SerializeField] TextMeshProUGUI feverNoticeText;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class ChargeBar : MonoBehaviour
         currentGauge = 0f;
 
         player = FindObjectOfType<PlayerController>();
+
 
         // 슬라이더의 백그라운드 이미지를 투명하게 설정
         SetBackgroundTransparent(chargeBarSliderLeft);
@@ -43,6 +45,7 @@ public class ChargeBar : MonoBehaviour
         }
 
         goSpace.gameObject.SetActive(false); // 텍스트 비활성화
+        feverNoticeText.gameObject.SetActive(false); //22
     }
 
     void Update()
@@ -60,6 +63,11 @@ public class ChargeBar : MonoBehaviour
         if (currentGauge >= maxGauge && !isFlashing)
         {
             StartChargeEffect();
+            if (!feverNoticeText.gameObject.activeSelf)
+            {
+                feverNoticeText.gameObject.SetActive(true);
+                StartCoroutine(ChargeTextEffectCoroutine());
+            }
         }
         // 게이지가 0이 되면 반짝이는 효과 중지
         else if (currentGauge <= 0 && isFlashing)
@@ -87,6 +95,10 @@ public class ChargeBar : MonoBehaviour
         // chargeBarSliderLeft.value = currentGauge; // 슬라이더 업데이트
         // chargeBarSliderRight.value = currentGauge;
 
+        if (feverNoticeText.gameObject.activeSelf)
+        {
+            feverNoticeText.gameObject.SetActive(false);
+        }
         StartCoroutine(gaugeDecreasing());
     }
 
@@ -218,4 +230,26 @@ public class ChargeBar : MonoBehaviour
             yield return null;  // 다음 프레임까지 대기
         }
     }
+
+    IEnumerator ChargeTextEffectCoroutine()
+    {
+        float timer = 0f;
+        float duration = 2f;
+        float blinkSpeed = 3f;
+        while (true)
+        {
+            timer += Time.deltaTime / duration;
+            float hue = Mathf.Repeat(timer, 1f);  // hue 값이 0에서 1 사이를 반복
+            Color newColor = Color.HSVToRGB(hue, 0.3f, 1f);  // HSV 값을 RGB로 변환
+
+            //깜박거림 추가
+            float alpha = Mathf.PingPong(Time.time * blinkSpeed, 1f);
+
+            newColor.a = alpha;
+            feverNoticeText.color = newColor; // 텍스트 색상 변경
+
+            yield return null;  // 다음 프레임까지 대기
+        }
+    }
 }
+

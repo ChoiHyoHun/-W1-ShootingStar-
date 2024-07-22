@@ -14,7 +14,7 @@ public class PlatformStaticHp : MonoBehaviour
 
     //추가
     [SerializeField]
-    private float rayDistance = 5f;
+    private float rayDistance = 3f;
     private bool wasHitLastFrame = false;
     float distanceLastFrame;
 
@@ -44,7 +44,7 @@ public class PlatformStaticHp : MonoBehaviour
 
                 isAvoided = true; //있다가 갔으니까 피한거지.
 
-                PlayerController.Instance.chargeBar.ChargeSkill(2f);
+                PlayerController.Instance.chargeBar.ChargeSkill(3f);
                 GameManager.Instance.AddScore(avoidScore);
                 //점수 텍스트 팝업
                 scoreText = Instantiate(scoreTextPfb, PlayerController.Instance.transform.position, Quaternion.identity);
@@ -60,11 +60,11 @@ public class PlatformStaticHp : MonoBehaviour
         // 거리에 따라 점수를 설정합니다.
         if (distance <= 1f && distance > 0f)
         {
-            return 700;
+            return 500;
         }
         else if (distance <= 2f && distance > 1f)
         {
-            return 500;
+            return 400;
         }
         else if (distance <= 3f && distance > 2f)
         {
@@ -87,12 +87,13 @@ public class PlatformStaticHp : MonoBehaviour
             //파괴 가능한가?
             if (CanBreak())
             {
+                Break();
                 //대쉬 상태가 아닌가?
                 if (!PlayerController.Instance.isDash)
                     //바운스 호출
                     PlayerController.Instance.Bounce(transform.position.y);
 
-                Break();
+                //Break();
             }
             else
             {

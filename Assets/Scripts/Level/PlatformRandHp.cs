@@ -33,7 +33,7 @@ public class PlatformRandHp : MonoBehaviour
 
     //추가
     [SerializeField]
-    private float rayDistance = 5f;
+    private float rayDistance = 3f;
     private bool wasHitLastFrame = false;
     float distanceLastFrame;
 
